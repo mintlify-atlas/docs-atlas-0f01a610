@@ -1,0 +1,66 @@
+{
+  "projectType": "general",
+  "projectName": "Desktop Config Files",
+  "projectDescription": "Personal desktop configuration files for Neovim, Tmux, Alacritty, and AeroSpace window manager",
+  "theme": "aspen",
+  "primaryColor": "#7aa2f7",
+  "lightColor": "#89b4fa",
+  "darkColor": "#565f89",
+  "navigation": {
+    "groups": [
+      {
+        "group": "Overview",
+        "pages": ["introduction", "installation"]
+      },
+      {
+        "group": "Neovim Configuration",
+        "pages": [
+          "nvim/overview",
+          "nvim/plugins",
+          "nvim/keymaps",
+          "nvim/colorschemes"
+        ]
+      },
+      {
+        "group": "Terminal Configuration",
+        "pages": [
+          "alacritty/overview",
+          "alacritty/themes",
+          "tmux/overview",
+          "tmux/keybindings"
+        ]
+      },
+      {
+        "group": "Window Management",
+        "pages": [
+          "aerospace/overview",
+          "aerospace/keybindings",
+          "aerospace/workspaces"
+        ]
+      },
+      {
+        "group": "Guides",
+        "pages": [
+          "guides/getting-started",
+          "guides/customization"
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "LazyVim-based Neovim configuration with custom plugins",
+    "Alacritty terminal with 100+ theme options",
+    "Tmux configuration with Vim keybindings and Catppuccin theme",
+    "AeroSpace tiling window manager for macOS"
+  ],
+  "publicApiSurface": [
+    "nvim/init.lua - Main Neovim entry point",
+    "nvim/lua/config/lazy.lua - LazyVim plugin manager setup",
+    "nvim/lua/config/keymaps.lua - Custom key mappings",
+    "nvim/lua/config/options.lua - Editor options",
+    "nvim/lua/plugins/*.lua - Plugin configurations",
+    "alacritty/alacritty.toml - Alacritty terminal configuration",
+    "tmux/tmux.conf - Tmux configuration",
+    "aerospace/aerospace.toml - AeroSpace window manager configuration"
+  ]
+}
