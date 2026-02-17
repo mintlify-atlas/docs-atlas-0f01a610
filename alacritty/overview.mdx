@@ -1,0 +1,193 @@
+---
+title: 'Alacritty Configuration'
+description: 'Overview of Alacritty terminal emulator configuration'
+---
+
+## Introduction
+
+Alacritty is a modern, GPU-accelerated terminal emulator written in Rust. This configuration provides a highly customized setup with theme support, transparency effects, and optimized font rendering.
+
+## Configuration File
+
+The main configuration file is located at `~/.config/alacritty/alacritty.toml`.
+
+<Note>
+  Alacritty uses TOML format for configuration. Changes to the configuration file are automatically reloaded without restarting the terminal.
+</Note>
+
+## Complete Configuration
+
+```toml alacritty.toml
+general.import = [
+    "~/.config/alacritty/themes/themes/coolnight.toml"
+]
+[ env ]
+TERM = "xterm-256color"
+
+[window]
+padding.x = 10
+padding.y = 10
+
+decorations = "Buttonless"
+opacity = 0.8
+blur = true
+startup_mode = "Maximized"
+
+[font]
+normal.family = "0xProto Nerd Font Mono"
+
+#regular
+size = 16
+```
+
+## Key Configuration Settings
+
+### Theme Import
+
+The configuration imports the theme from an external file using the `general.import` directive:
+
+```toml
+general.import = [
+    "~/.config/alacritty/themes/themes/coolnight.toml"
+]
+```
+
+<Note>
+  The current theme is **coolnight**. You can easily switch themes by modifying this import path. See the [Themes](/alacritty/themes) page for available options.
+</Note>
+
+### Environment Variables
+
+The terminal type is set to support 256 colors:
+
+```toml
+[ env ]
+TERM = "xterm-256color"
+```
+
+This ensures proper color rendering in terminal applications and provides compatibility with various CLI tools.
+
+### Window Settings
+
+<Tabs>
+  <Tab title="Padding">
+    ```toml
+    padding.x = 10
+    padding.y = 10
+    ```
+    
+    Adds 10 pixels of padding on all sides, creating breathing room between the terminal content and window edges.
+  </Tab>
+  
+  <Tab title="Decorations">
+    ```toml
+    decorations = "Buttonless"
+    ```
+    
+    Removes window buttons (minimize, maximize, close) for a cleaner appearance while maintaining the title bar.
+  </Tab>
+  
+  <Tab title="Transparency">
+    ```toml
+    opacity = 0.8
+    blur = true
+    ```
+    
+    Sets window opacity to 80% with background blur enabled, creating a modern, semi-transparent effect.
+    
+    <Warning>
+      Background blur requires compositor support (e.g., picom on Linux or native macOS compositor).
+    </Warning>
+  </Tab>
+  
+  <Tab title="Startup Mode">
+    ```toml
+    startup_mode = "Maximized"
+    ```
+    
+    Opens Alacritty in maximized mode by default.
+  </Tab>
+</Tabs>
+
+### Font Configuration
+
+The configuration uses **0xProto Nerd Font Mono** at size 16:
+
+```toml
+[font]
+normal.family = "0xProto Nerd Font Mono"
+size = 16
+```
+
+<Note>
+  **0xProto Nerd Font Mono** is a programming font with built-in Nerd Font icons, providing excellent readability and support for powerline symbols and dev icons.
+</Note>
+
+## Installation Requirements
+
+<Accordion title="Required Font">
+  Install the 0xProto Nerd Font from the [Nerd Fonts repository](https://www.nerdfonts.com/):
+  
+  ```bash
+  # macOS with Homebrew
+  brew tap homebrew/cask-fonts
+  brew install font-0xproto-nerd-font
+  
+  # Linux (manual installation)
+  mkdir -p ~/.local/share/fonts
+  cd ~/.local/share/fonts
+  # Download and extract 0xProto Nerd Font
+  fc-cache -fv
+  ```
+</Accordion>
+
+<Accordion title="Compositor for Blur (Linux)">
+  Background blur requires a compositor like picom:
+  
+  ```bash
+  # Ubuntu/Debian
+  sudo apt install picom
+  
+  # Arch Linux
+  sudo pacman -S picom
+  
+  # Fedora
+  sudo dnf install picom
+  ```
+  
+  Enable blur in picom configuration (`~/.config/picom/picom.conf`):
+  
+  ```conf
+  blur-background = true;
+  blur-method = "dual_kawase";
+  blur-strength = 5;
+  ```
+</Accordion>
+
+## Configuration Location
+
+| Platform | Configuration Path |
+|----------|-------------------|
+| Linux    | `~/.config/alacritty/alacritty.toml` |
+| macOS    | `~/.config/alacritty/alacritty.toml` |
+| Windows  | `%APPDATA%\alacritty\alacritty.toml` |
+
+## Reloading Configuration
+
+Alacritty automatically reloads the configuration file when changes are detected. You can also manually trigger a reload:
+
+- **macOS**: `Cmd + ,`
+- **Linux/Windows**: `Ctrl + Shift + R` (if configured)
+
+Alternatively, simply edit the config file and see changes in existing windows immediately.
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Explore Themes" icon="palette" href="/alacritty/themes">
+    Browse 150+ available themes and learn how to switch between them
+  </Card>
+  <Card title="Keybindings" icon="keyboard" href="/alacritty/keybindings">
+    Customize keyboard shortcuts for enhanced productivity
+  </Card>
+</CardGroup>

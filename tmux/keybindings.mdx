@@ -1,0 +1,442 @@
+---
+title: 'Tmux Keybindings'
+description: 'Complete reference of tmux keyboard shortcuts and keybindings'
+---
+
+## Prefix Key
+
+<Note>
+  This configuration uses `Ctrl+Space` as the prefix key instead of the default `Ctrl+b`.
+</Note>
+
+```bash
+# Custom prefix configuration
+unbind C-b
+set -g prefix C-Space
+bind C-Space send-prefix
+```
+
+All keybindings below require pressing the **Prefix** key first, unless otherwise noted.
+
+<Tabs>
+  <Tab title="Prefix: Ctrl+Space">
+    Press `Ctrl+Space`, release, then press the command key.
+    
+    Example: To create a new window, press `Ctrl+Space` then `c`.
+  </Tab>
+  
+  <Tab title="Sending Prefix to Applications">
+    To send the actual `Ctrl+Space` keystroke to a program running in tmux (like Vim), press `Ctrl+Space` twice.
+  </Tab>
+</Tabs>
+
+## Custom Keybindings
+
+These are keybindings explicitly configured in `tmux.conf`:
+
+### Copy Mode Entry
+
+| Keybinding | Action | Configuration |
+|------------|--------|---------------|
+| `Prefix + [` | Enter copy mode | `bind-key [ copy-mode` |
+
+```bash
+# Enter copy mode with Prefix+[
+bind-key [ copy-mode
+```
+
+### Copy Mode Keybindings (Vim-style)
+
+These keybindings work when in copy mode:
+
+| Keybinding | Action | Configuration |
+|------------|--------|---------------|
+| `v` | Begin selection (visual mode) | `bind-key -T copy-mode-vi 'v' send -X begin-selection` |
+| `y` | Copy selection (yank) | `bind-key -T copy-mode-vi 'y' send -X copy-selection` |
+| `V` | Toggle rectangle selection | `bind-key -T copy-mode-vi 'V' send -X rectangle-toggle` |
+
+```bash
+# Vim-like navigation in copy mode
+bind-key -T copy-mode-vi 'v' send -X begin-selection
+bind-key -T copy-mode-vi 'y' send -X copy-selection
+bind-key -T copy-mode-vi 'V' send -X rectangle-toggle
+```
+
+<Accordion title="Copy Mode Workflow Example">
+  1. Press `Ctrl+Space` then `[` to enter copy mode
+  2. Navigate using Vim keys (`h`, `j`, `k`, `l`, `w`, `b`, etc.)
+  3. Press `v` to start visual selection
+  4. Navigate to extend selection
+  5. Press `y` to copy (yank) the selected text
+  6. Press `q` or `Esc` to exit copy mode
+  7. Paste with `Prefix + ]`
+</Accordion>
+
+## Default Tmux Keybindings
+
+These are standard tmux keybindings that work with the custom `Ctrl+Space` prefix:
+
+### Session Management
+
+| Keybinding | Action | Description |
+|------------|--------|-------------|
+| `Prefix + d` | Detach from session | Detach from current session (session continues running) |
+| `Prefix + $` | Rename session | Rename the current session |
+| `Prefix + s` | List sessions | Show all sessions and switch between them |
+| `Prefix + (` | Previous session | Switch to previous session |
+| `Prefix + )` | Next session | Switch to next session |
+
+### Window Management
+
+| Keybinding | Action | Description |
+|------------|--------|-------------|
+| `Prefix + c` | Create window | Create a new window |
+| `Prefix + ,` | Rename window | Rename the current window |
+| `Prefix + &` | Kill window | Close current window (with confirmation) |
+| `Prefix + n` | Next window | Switch to next window |
+| `Prefix + p` | Previous window | Switch to previous window |
+| `Prefix + 0-9` | Switch to window | Switch to window by number (1-9, 0) |
+| `Prefix + l` | Last window | Switch to last active window |
+| `Prefix + w` | List windows | Show window list and switch interactively |
+| `Prefix + f` | Find window | Search for window by name |
+
+<Note>
+  Windows start at index 1 (not 0) due to `set -g base-index 1` in the configuration.
+</Note>
+
+### Pane Management
+
+| Keybinding | Action | Description |
+|------------|--------|-------------|
+| `Prefix + %` | Split horizontally | Split current pane vertically (side by side) |
+| `Prefix + "` | Split vertically | Split current pane horizontally (top and bottom) |
+| `Prefix + x` | Kill pane | Close current pane (with confirmation) |
+| `Prefix + z` | Toggle pane zoom | Maximize/restore current pane |
+| `Prefix + !` | Break pane | Convert pane to new window |
+| `Prefix + q` | Show pane numbers | Display pane numbers (press number to switch) |
+| `Prefix + {` | Move pane left | Swap current pane with previous |
+| `Prefix + }` | Move pane right | Swap current pane with next |
+| `Prefix + Space` | Cycle layouts | Cycle through pane layouts |
+| `Prefix + o` | Next pane | Switch to next pane |
+| `Prefix + ;` | Last pane | Switch to last active pane |
+
+### Pane Navigation
+
+| Keybinding | Action | Description |
+|------------|--------|-------------|
+| `Prefix + ↑` | Move up | Switch to pane above |
+| `Prefix + ↓` | Move down | Switch to pane below |
+| `Prefix + ←` | Move left | Switch to pane on the left |
+| `Prefix + →` | Move right | Switch to pane on the right |
+
+<Warning>
+  The arrow key navigation uses the custom `Ctrl+Space` prefix, not the default `Ctrl+b`.
+</Warning>
+
+### Pane Resizing
+
+| Keybinding | Action | Description |
+|------------|--------|-------------|
+| `Prefix + Ctrl + ↑` | Resize up | Increase pane height upward |
+| `Prefix + Ctrl + ↓` | Resize down | Increase pane height downward |
+| `Prefix + Ctrl + ←` | Resize left | Increase pane width leftward |
+| `Prefix + Ctrl + →` | Resize right | Increase pane width rightward |
+| `Prefix + Alt + ↑` | Resize up (large) | Increase pane height upward by 5 |
+| `Prefix + Alt + ↓` | Resize down (large) | Increase pane height downward by 5 |
+| `Prefix + Alt + ←` | Resize left (large) | Increase pane width leftward by 5 |
+| `Prefix + Alt + →` | Resize right (large) | Increase pane width rightward by 5 |
+
+### Copy Mode Navigation (Vim Keys)
+
+With `setw -g mode-keys vi`, these Vim keys work in copy mode:
+
+<Tabs>
+  <Tab title="Basic Movement">
+    | Key | Action |
+    |-----|--------|
+    | `h` | Move left |
+    | `j` | Move down |
+    | `k` | Move up |
+    | `l` | Move right |
+    | `w` | Jump forward by word |
+    | `b` | Jump backward by word |
+    | `e` | Jump to end of word |
+    | `0` | Jump to start of line |
+    | `$` | Jump to end of line |
+    | `^` | Jump to first non-blank character |
+  </Tab>
+  
+  <Tab title="Advanced Movement">
+    | Key | Action |
+    |-----|--------|
+    | `gg` | Jump to start of buffer |
+    | `G` | Jump to end of buffer |
+    | `H` | Jump to top of screen |
+    | `M` | Jump to middle of screen |
+    | `L` | Jump to bottom of screen |
+    | `Ctrl+b` | Scroll up one page |
+    | `Ctrl+f` | Scroll down one page |
+    | `Ctrl+u` | Scroll up half page |
+    | `Ctrl+d` | Scroll down half page |
+  </Tab>
+  
+  <Tab title="Search">
+    | Key | Action |
+    |-----|--------|
+    | `/` | Search forward |
+    | `?` | Search backward |
+    | `n` | Next search result |
+    | `N` | Previous search result |
+  </Tab>
+  
+  <Tab title="Selection (Custom)">
+    | Key | Action |
+    |-----|--------|
+    | `v` | Begin selection |
+    | `V` | Toggle rectangle selection |
+    | `y` | Copy selection |
+    | `Esc` | Clear selection |
+  </Tab>
+</Tabs>
+
+### Command Mode
+
+| Keybinding | Action | Description |
+|------------|--------|-------------|
+| `Prefix + :` | Enter command mode | Type tmux commands directly |
+| `Prefix + ?` | List keybindings | Show all keybindings |
+
+### Miscellaneous
+
+| Keybinding | Action | Description |
+|------------|--------|-------------|
+| `Prefix + t` | Show time | Display large clock |
+| `Prefix + r` | Reload config | Source configuration file (if bound) |
+| `Prefix + [` | Enter copy mode | Scroll and copy text |
+| `Prefix + ]` | Paste buffer | Paste most recent copied text |
+| `Prefix + =` | List buffers | Show all paste buffers |
+| `Prefix + -` | Delete buffer | Delete most recent paste buffer |
+| `Prefix + #` | List buffers | Show paste buffer list |
+
+## Mouse Support
+
+Mouse support is enabled with `set -g mouse on`:
+
+<CardGroup cols={2}>
+  <Card title="Window Navigation" icon="mouse">
+    - Click on window name in status bar to switch
+    - Scroll wheel to switch windows
+  </Card>
+  
+  <Card title="Pane Operations" icon="grip">
+    - Click on pane to focus
+    - Drag pane border to resize
+    - Double-click on border to resize evenly
+  </Card>
+  
+  <Card title="Text Selection" icon="highlighter">
+    - Click and drag to select text
+    - Double-click to select word
+    - Triple-click to select line
+  </Card>
+  
+  <Card title="Copy Mode" icon="scroll">
+    - Scroll wheel to enter copy mode
+    - Scroll to navigate history
+    - Right-click to paste (terminal-dependent)
+  </Card>
+</CardGroup>
+
+<Note>
+  To select text with the mouse and copy to system clipboard, hold `Shift` while selecting (bypasses tmux selection).
+</Note>
+
+## Plugin Keybindings
+
+TPM (Tmux Plugin Manager) adds these keybindings:
+
+| Keybinding | Action | Description |
+|------------|--------|-------------|
+| `Prefix + I` | Install plugins | Install plugins listed in config (capital I) |
+| `Prefix + U` | Update plugins | Update all installed plugins |
+| `Prefix + Alt + u` | Uninstall plugins | Remove plugins not in config |
+
+```bash
+# Plugin management
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'dreamsofcode-io/catppuccin-tmux'
+```
+
+## Quick Reference Card
+
+<Accordion title="Prefix Key">
+  | Shortcut | Full Keys |
+  |----------|----------|
+  | `Prefix` | `Ctrl+Space` |
+</Accordion>
+
+<Accordion title="Essential Keybindings">
+  | Action | Keybinding |
+  |--------|------------|
+  | New window | `Prefix + c` |
+  | Split horizontal | `Prefix + %` |
+  | Split vertical | `Prefix + "` |
+  | Navigate panes | `Prefix + ↑↓←→` |
+  | Zoom pane | `Prefix + z` |
+  | Copy mode | `Prefix + [` |
+  | Paste | `Prefix + ]` |
+  | Detach | `Prefix + d` |
+  | List windows | `Prefix + w` |
+  | Kill pane | `Prefix + x` |
+</Accordion>
+
+<Accordion title="Copy Mode (Vim)">
+  | Action | Keybinding |
+  |--------|------------|
+  | Enter copy mode | `Prefix + [` |
+  | Start selection | `v` |
+  | Copy selection | `y` |
+  | Rectangle select | `V` |
+  | Search forward | `/` |
+  | Search backward | `?` |
+  | Next result | `n` |
+  | Exit | `q` or `Esc` |
+</Accordion>
+
+## Adding Custom Keybindings
+
+You can add your own keybindings to `tmux.conf`:
+
+### Example: Reload Configuration
+
+```bash
+# Reload config with Prefix + r
+bind r source-file ~/.config/tmux/tmux.conf \; display "Config reloaded!"
+```
+
+### Example: Split Panes with Intuitive Keys
+
+```bash
+# Split with | and -
+bind | split-window -h
+bind - split-window -v
+unbind '"'
+unbind %
+```
+
+### Example: Vim-like Pane Navigation
+
+```bash
+# Use h, j, k, l for pane navigation
+bind h select-pane -L
+bind j select-pane -D
+bind k select-pane -U
+bind l select-pane -R
+```
+
+### Example: Vim-like Pane Resizing
+
+```bash
+# Resize panes with H, J, K, L
+bind -r H resize-pane -L 5
+bind -r J resize-pane -D 5
+bind -r K resize-pane -U 5
+bind -r L resize-pane -R 5
+```
+
+<Note>
+  The `-r` flag makes the keybinding repeatable, so you can press the prefix once and then press the key multiple times.
+</Note>
+
+## Configuration Summary
+
+Here's a summary of all keybinding-related configuration:
+
+```bash tmux.conf (keybindings only)
+# Prefix key: Ctrl+Space
+unbind C-b
+set -g prefix C-Space
+bind C-Space send-prefix
+
+# Vim keybindings in copy mode
+setw -g mode-keys vi
+
+# Copy mode keybindings
+bind-key [ copy-mode
+bind-key -T copy-mode-vi 'v' send -X begin-selection
+bind-key -T copy-mode-vi 'y' send -X copy-selection
+bind-key -T copy-mode-vi 'V' send -X rectangle-toggle
+
+# Mouse support
+set -g mouse on
+```
+
+## Keybinding Conflicts
+
+<Warning>
+  Be aware of potential keybinding conflicts with other applications:
+</Warning>
+
+<Tabs>
+  <Tab title="Vim/Neovim">
+    If you use Vim inside tmux, `Ctrl+Space` won't conflict as it's not a common Vim keybinding. However, ensure you can send `Ctrl+Space` twice if needed.
+  </Tab>
+  
+  <Tab title="Terminal Emulator">
+    Some terminal emulators may intercept `Ctrl+Space`. Test that tmux receives the keybinding correctly.
+  </Tab>
+  
+  <Tab title="Shell">
+    `Ctrl+Space` is typically not used by shells (bash, zsh, fish), so conflicts are rare.
+  </Tab>
+</Tabs>
+
+## Cheat Sheet
+
+Print-friendly keybinding reference:
+
+```
+TMUX KEYBINDINGS CHEAT SHEET
+Prefix: Ctrl+Space
+
+SESSIONS                    WINDOWS                      PANES
+─────────────────           ─────────────────            ─────────────────
+Prefix + d    Detach        Prefix + c    New            Prefix + %    Split H
+Prefix + $    Rename        Prefix + ,    Rename         Prefix + "    Split V
+Prefix + s    List          Prefix + n    Next           Prefix + x    Close
+Prefix + (    Previous      Prefix + p    Previous       Prefix + z    Zoom
+Prefix + )    Next          Prefix + 0-9  Switch #       Prefix + o    Next
+                            Prefix + &    Close         Prefix + ;    Last
+                            Prefix + w    List          Prefix + ↑↓←→ Navigate
+
+COPY MODE (Vim)             NAVIGATION                   OTHER
+─────────────────           ─────────────────            ─────────────────
+Prefix + [    Enter         h,j,k,l       Move          Prefix + :    Command
+v             Select         w,b           Word          Prefix + ?    Help
+y             Copy           0,$           Line          Prefix + t    Clock
+V             Rectangle      gg,G          Buffer        Prefix + ]    Paste
+/             Search         Ctrl+f/b      Page          Prefix + I    Install
+q             Exit           n,N           Result        Prefix + U    Update
+```
+
+<Note>
+  Save this cheat sheet or print it for quick reference while learning tmux keybindings.
+</Note>
+
+## Additional Resources
+
+<CardGroup cols={2}>
+  <Card title="Tmux Manual" icon="book">
+    View the complete tmux manual:
+    ```bash
+    man tmux
+    ```
+  </Card>
+  
+  <Card title="List All Keybindings" icon="list">
+    Inside tmux, view all active keybindings:
+    ```bash
+    Prefix + ?
+    ```
+  </Card>
+</CardGroup>

@@ -1,0 +1,899 @@
+---
+title: 'Customization Guide'
+description: 'Learn how to customize your desktop configuration setup'
+icon: 'palette'
+---
+
+This guide covers how to customize each component of your desktop configuration to match your preferences and workflow.
+
+## Overview
+
+All configuration files are located in the `source/` directory of the repository:
+
+- **Neovim:** `source/nvim/`
+- **Alacritty:** `source/alacritty/`
+- **Tmux:** `source/tmux/`
+- **AeroSpace:** `source/aerospace/`
+
+<Note>
+After making changes, remember to restart the respective application or reload its configuration to see your changes take effect.
+</Note>
+
+## Customizing by Component
+
+<Tabs>
+  <Tab title="Neovim">
+    ### Directory Structure
+
+    The Neovim configuration uses LazyVim as a base and follows this structure:
+
+    ```
+    nvim/
+    ├── init.lua              # Entry point
+    ├── lua/
+    │   ├── config/
+    │   │   ├── autocmds.lua  # Auto commands
+    │   │   ├── keymaps.lua   # Custom keybindings
+    │   │   ├── lazy.lua      # Lazy.nvim setup
+    │   │   └── options.lua   # Vim options
+    │   └── plugins/          # Plugin configurations
+    │       ├── colorscheme.lua
+    │       ├── example.lua
+    │       ├── leetcode.lua
+    │       ├── obsidian.lua
+    │       └── ...
+    ```
+
+    ### Changing the Colorscheme
+
+    The colorscheme is configured in `lua/plugins/colorscheme.lua:1`. Currently, it's set to "onedark":
+
+    **To change the active colorscheme:**
+
+    Edit `lua/plugins/colorscheme.lua:18-22`:
+    ```lua
+    {
+      "LazyVim/LazyVim",
+      opts = {
+        colorscheme = "kanagawa",  -- Change this to your preference
+      },
+    }
+    ```
+
+    **Available colorschemes in the configuration:**
+    - `kanagawa` - Inspired by the Japanese painting
+    - `gruvbox` - Retro groove color scheme
+    - `rose-pine` - Soho vibes for Neovim
+    - `tokyodark` - Dark Tokyo-inspired theme
+    - `everforest` - Comfortable & pleasant color scheme
+    - `onedark` - Atom's One Dark theme (current)
+
+    **To add a new colorscheme:**
+
+    Add it to `lua/plugins/colorscheme.lua`:
+    ```lua
+    return {
+      -- Add your new colorscheme
+      { "folke/tokyonight.nvim" },
+      
+      -- Existing colorschemes...
+      { "rebelot/kanagawa.nvim" },
+      
+      -- Set it as active
+      {
+        "LazyVim/LazyVim",
+        opts = {
+          colorscheme = "tokyonight",
+        },
+      },
+    }
+    ```
+
+    Then run `:Lazy sync` in Neovim to install it.
+
+    ### Adding New Plugins
+
+    Create a new file in `lua/plugins/` or add to an existing one:
+
+    **Example - Adding a new plugin file:**
+
+    Create `lua/plugins/my-plugin.lua`:
+    ```lua
+    return {
+      {
+        "github-username/plugin-name",
+        event = "VeryLazy",  -- Load lazily
+        opts = {
+          -- Plugin options
+        },
+        config = function()
+          -- Custom setup code
+          require("plugin-name").setup({
+            -- configuration
+          })
+        end,
+      },
+    }
+    ```
+
+    **Common plugin patterns:**
+
+    ```lua
+    -- Simple plugin with default config
+    { "plugin/name" }
+
+    -- Plugin with options
+    {
+      "plugin/name",
+      opts = {
+        option1 = true,
+        option2 = "value",
+      },
+    }
+
+    -- Plugin with dependencies
+    {
+      "plugin/name",
+      dependencies = {
+        "dependency/one",
+        "dependency/two",
+      },
+    }
+
+    -- Plugin with custom keybindings
+    {
+      "plugin/name",
+      keys = {
+        { "<leader>p", "<cmd>PluginCommand<cr>", desc = "Plugin Command" },
+      },
+    }
+    ```
+
+    <Tip>
+    Check out the [LazyVim plugins documentation](https://www.lazyvim.org/plugins) for more examples and patterns.
+    </Tip>
+
+    ### Customizing Keymaps
+
+    Add custom keybindings in `lua/config/keymaps.lua:1`:
+
+    ```lua
+    local map = vim.keymap.set
+
+    -- Example: Add custom keybindings
+    map("n", "<leader>w", "<cmd>w<cr>", { desc = "Save file" })
+    map("n", "<leader>q", "<cmd>q<cr>", { desc = "Quit" })
+    
+    -- Window navigation
+    map("n", "<C-h>", "<C-w>h", { desc = "Go to left window" })
+    map("n", "<C-l>", "<C-w>l", { desc = "Go to right window" })
+    
+    -- Buffer navigation
+    map("n", "<S-h>", "<cmd>bprevious<cr>", { desc = "Prev buffer" })
+    map("n", "<S-l>", "<cmd>bnext<cr>", { desc = "Next buffer" })
+    
+    -- Better indenting
+    map("v", "<", "<gv")
+    map("v", ">", ">gv")
+    ```
+
+    ### Modifying Options
+
+    Edit Vim options in `lua/config/options.lua`:
+
+    ```lua
+    local opt = vim.opt
+
+    -- Line numbers
+    opt.relativenumber = true
+    opt.number = true
+
+    -- Tabs and indentation
+    opt.tabstop = 2
+    opt.shiftwidth = 2
+    opt.expandtab = true
+    opt.autoindent = true
+
+    -- Line wrapping
+    opt.wrap = false
+
+    -- Search settings
+    opt.ignorecase = true
+    opt.smartcase = true
+
+    -- Appearance
+    opt.termguicolors = true
+    opt.background = "dark"
+    opt.signcolumn = "yes"
+
+    -- Clipboard
+    opt.clipboard:append("unnamedplus")
+    ```
+
+    ### Example Plugin Customizations
+
+    The configuration includes several pre-configured plugins. Here's how to customize them:
+
+    **Obsidian Plugin** (`lua/plugins/obsidian.lua`):
+    ```lua
+    return {
+      "epwalsh/obsidian.nvim",
+      opts = {
+        workspaces = {
+          {
+            name = "personal",
+            path = "~/Documents/notes",  -- Change to your vault path
+          },
+        },
+        daily_notes = {
+          folder = "daily",
+          date_format = "%Y-%m-%d",
+        },
+      },
+    }
+    ```
+
+    <Warning>
+    After adding or modifying plugins, run `:Lazy sync` in Neovim to install updates.
+    </Warning>
+  </Tab>
+
+  <Tab title="Alacritty">
+    ### Configuration File
+
+    Alacritty uses TOML format. The main config is at `alacritty/alacritty.toml:1`.
+
+    ### Changing Themes
+
+    The current theme is imported at `alacritty/alacritty.toml:2`:
+
+    ```toml
+    general.import = [
+        "~/.config/alacritty/themes/themes/coolnight.toml"
+    ]
+    ```
+
+    **To switch themes:**
+
+    Replace the theme path with any theme from the `alacritty/themes/themes/` directory:
+
+    ```toml
+    general.import = [
+        "~/.config/alacritty/themes/themes/catppuccin_mocha.toml"
+    ]
+    ```
+
+    **Popular themes available:**
+    - `catppuccin_mocha.toml`
+    - `catppuccin_macchiato.toml`
+    - `dracula.toml`
+    - `gruvbox.toml`
+    - `tokyonight.toml`
+    - `nord.toml`
+    - `everforest_dark.toml`
+    - `ayu_dark.toml`
+
+    <Tip>
+    Browse all available themes in the `~/.config/alacritty/themes/themes/` directory. You can preview colors by opening the theme file.
+    </Tip>
+
+    ### Changing Font
+
+    The font is configured at `alacritty/alacritty.toml:16`:
+
+    ```toml
+    [font]
+    normal.family = "0xProto Nerd Font Mono"
+    size = 16
+    ```
+
+    **To change the font:**
+
+    1. Install your preferred Nerd Font
+    2. Update the configuration:
+
+    ```toml
+    [font]
+    normal.family = "JetBrainsMono Nerd Font Mono"
+    # or
+    normal.family = "FiraCode Nerd Font Mono"
+    # or
+    normal.family = "Hack Nerd Font Mono"
+    
+    size = 14  # Adjust size as needed
+    ```
+
+    **Font variations:**
+
+    ```toml
+    [font]
+    normal.family = "Your Font"
+    normal.style = "Regular"
+    
+    bold.family = "Your Font"
+    bold.style = "Bold"
+    
+    italic.family = "Your Font"
+    italic.style = "Italic"
+    
+    bold_italic.family = "Your Font"
+    bold_italic.style = "Bold Italic"
+    ```
+
+    ### Adjusting Transparency and Window Settings
+
+    Window settings are at `alacritty/alacritty.toml:7-14`:
+
+    ```toml
+    [window]
+    # Padding around the terminal content
+    padding.x = 10
+    padding.y = 10
+    
+    decorations = "Buttonless"  # macOS: "Buttonless", "Full", "Transparent"
+    opacity = 0.8               # 0.0 (transparent) to 1.0 (opaque)
+    blur = true                 # Enable background blur (macOS)
+    startup_mode = "Maximized"  # "Windowed", "Maximized", "Fullscreen"
+    ```
+
+    **Customization options:**
+
+    ```toml
+    [window]
+    # More/less padding
+    padding.x = 20
+    padding.y = 20
+    
+    # Different opacity levels
+    opacity = 0.95  # Less transparent
+    opacity = 0.7   # More transparent
+    
+    # Window decorations
+    decorations = "Full"        # Show title bar and buttons
+    decorations = "None"        # No decorations
+    
+    # Startup mode
+    startup_mode = "Windowed"   # Normal window
+    startup_mode = "Fullscreen" # Fullscreen mode
+    
+    # Dynamic padding (scales with font)
+    dynamic_padding = true
+    ```
+
+    ### Terminal Environment
+
+    Set environment variables at `alacritty/alacritty.toml:4-5`:
+
+    ```toml
+    [env]
+    TERM = "xterm-256color"
+    # Add custom environment variables
+    EDITOR = "nvim"
+    ```
+
+    ### Additional Customizations
+
+    **Cursor:**
+    ```toml
+    [cursor]
+    style.shape = "Block"  # "Block", "Underline", "Beam"
+    style.blinking = "On"
+    blink_interval = 750
+    ```
+
+    **Scrolling:**
+    ```toml
+    [scrolling]
+    history = 10000
+    multiplier = 3
+    ```
+
+    **Mouse:**
+    ```toml
+    [mouse]
+    hide_when_typing = true
+    ```
+
+    <Note>
+    After making changes, Alacritty automatically reloads the configuration. No restart needed.
+    </Note>
+  </Tab>
+
+  <Tab title="Tmux">
+    ### Configuration File
+
+    Tmux configuration is at `tmux/tmux.conf:1`.
+
+    ### Changing the Prefix Key
+
+    The prefix is changed from default `Ctrl+b` to `Ctrl+Space` at `tmux/tmux.conf:10-12`:
+
+    ```bash
+    # remap prefix from 'C-b' to 'C-Space'
+    unbind C-b
+    set -g prefix C-Space
+    bind C-Space send-prefix
+    ```
+
+    **To use a different prefix:**
+
+    ```bash
+    # Example: Use Ctrl+a
+    unbind C-b
+    set -g prefix C-a
+    bind C-a send-prefix
+    ```
+
+    **Popular prefix alternatives:**
+    - `C-a` - Screen-style prefix
+    - `C-Space` - Current configuration (easy to reach)
+    - `C-s` - Good for Dvorak users
+
+    ### Customizing the Status Bar
+
+    The Catppuccin theme is configured at `tmux/tmux.conf:26`:
+
+    ```bash
+    set -g @plugin 'dreamsofcode-io/catppuccin-tmux'
+    ```
+
+    **To switch to official Catppuccin:**
+
+    Comment out the current line and uncomment the official plugin:
+    ```bash
+    # set -g @plugin 'dreamsofcode-io/catppuccin-tmux'
+    set -g @plugin 'catppuccin/tmux'
+    ```
+
+    **To customize Catppuccin theme:**
+
+    Add these options before the `run` command:
+    ```bash
+    set -g @plugin 'catppuccin/tmux'
+
+    # Customize status bar modules
+    set -g @catppuccin_status_modules_right "directory user host session"
+    set -g @catppuccin_status_modules_left ""
+    
+    # Customize colors
+    set -g @catppuccin_window_left_separator ""
+    set -g @catppuccin_window_right_separator " "
+    set -g @catppuccin_window_middle_separator " █"
+    set -g @catppuccin_window_number_position "right"
+    ```
+
+    **Other popular status bar themes:**
+
+    ```bash
+    # Tokyo Night
+    set -g @plugin 'fabioluciano/tmux-tokyo-night'
+
+    # Dracula
+    set -g @plugin 'dracula/tmux'
+
+    # Nord
+    set -g @plugin 'arcticicestudio/nord-tmux'
+
+    # Power line
+    set -g @plugin 'erikw/tmux-powerline'
+    ```
+
+    ### Adding Custom Keybindings
+
+    Add keybindings after the existing configurations:
+
+    ```bash
+    # Split windows with more intuitive keys
+    bind | split-window -h -c "#{pane_current_path}"
+    bind - split-window -v -c "#{pane_current_path}"
+
+    # Resize panes
+    bind -r H resize-pane -L 5
+    bind -r J resize-pane -D 5
+    bind -r K resize-pane -U 5
+    bind -r L resize-pane -R 5
+
+    # Quick window switching
+    bind -n M-1 select-window -t 1
+    bind -n M-2 select-window -t 2
+    bind -n M-3 select-window -t 3
+
+    # Reload config
+    bind r source-file ~/.tmux.conf \; display "Config reloaded!"
+    ```
+
+    ### Adding Plugins
+
+    Add plugins before the `run '~/.tmux/plugins/tpm/tpm'` line at `tmux/tmux.conf:29`:
+
+    ```bash
+    # Existing plugins
+    set -g @plugin 'tmux-plugins/tpm'
+    set -g @plugin 'dreamsofcode-io/catppuccin-tmux'
+
+    # Add new plugins
+    set -g @plugin 'tmux-plugins/tmux-sensible'
+    set -g @plugin 'tmux-plugins/tmux-resurrect'  # Save/restore sessions
+    set -g @plugin 'tmux-plugins/tmux-continuum'  # Auto-save sessions
+    set -g @plugin 'tmux-plugins/tmux-yank'       # Better copying
+
+    run '~/.tmux/plugins/tpm/tpm'
+    ```
+
+    After adding plugins, press `Ctrl+Space` + `Shift+I` to install them.
+
+    **Useful plugins:**
+
+    ```bash
+    # Session management
+    set -g @plugin 'tmux-plugins/tmux-resurrect'
+    set -g @plugin 'tmux-plugins/tmux-continuum'
+
+    # Better pane navigation
+    set -g @plugin 'christoomey/vim-tmux-navigator'
+
+    # Copy to system clipboard
+    set -g @plugin 'tmux-plugins/tmux-yank'
+
+    # Sidebar file tree
+    set -g @plugin 'tmux-plugins/tmux-sidebar'
+    ```
+
+    ### Customizing Copy Mode
+
+    The configuration has Vim-style copy mode at `tmux/tmux.conf:21-24`:
+
+    ```bash
+    # Vim-like navigation in copy mode
+    bind-key -T copy-mode-vi 'v' send -X begin-selection
+    bind-key -T copy-mode-vi 'y' send -X copy-selection
+    bind-key -T copy-mode-vi 'V' send -X rectangle-toggle
+    ```
+
+    **To copy to system clipboard:**
+
+    ```bash
+    # macOS
+    bind-key -T copy-mode-vi 'y' send -X copy-pipe-and-cancel 'pbcopy'
+
+    # Linux (requires xclip)
+    bind-key -T copy-mode-vi 'y' send -X copy-pipe-and-cancel 'xclip -in -selection clipboard'
+    ```
+
+    ### Terminal Settings
+
+    Terminal settings are at `tmux/tmux.conf:2-6`:
+
+    ```bash
+    set -g default-terminal "tmux-256color"
+    set -ga terminal-overrides ',xterm-256color:Tc'
+    setw -g mode-keys vi
+    set -g renumber-windows on
+    set -g base-index 1
+    ```
+
+    <Tip>
+    After making changes, reload the Tmux configuration by pressing `Ctrl+Space` then typing `:source-file ~/.tmux.conf` and pressing Enter.
+    </Tip>
+  </Tab>
+
+  <Tab title="AeroSpace">
+    ### Configuration File
+
+    AeroSpace uses TOML format at `aerospace/aerospace.toml:1`.
+
+    <Warning>
+    AeroSpace is macOS-only. This configuration will not work on Linux or Windows.
+    </Warning>
+
+    ### Adjusting Gaps and Padding
+
+    Gaps are configured at `aerospace/aerospace.toml:54-60`:
+
+    ```toml
+    [gaps]
+    inner.horizontal = 0
+    inner.vertical =   0
+    outer.left =       0
+    outer.bottom =     0
+    outer.top =        0
+    outer.right =      0
+    ```
+
+    **To add gaps between windows:**
+
+    ```toml
+    [gaps]
+    inner.horizontal = 8   # Gap between windows horizontally
+    inner.vertical =   8   # Gap between windows vertically
+    outer.left =       8   # Gap from left screen edge
+    outer.bottom =     8   # Gap from bottom screen edge
+    outer.top =        8   # Gap from top (menu bar)
+    outer.right =      8   # Gap from right screen edge
+    ```
+
+    **Different gap sizes:**
+
+    ```toml
+    # Larger gaps for aesthetics
+    [gaps]
+    inner.horizontal = 12
+    inner.vertical =   12
+    outer.left =       12
+    outer.bottom =     12
+    outer.top =        40  # Larger for menu bar
+    outer.right =      12
+    ```
+
+    ### Adding Custom Keybindings
+
+    Keybindings are in the `[mode.main.binding]` section at `aerospace/aerospace.toml:65`:
+
+    **Add custom window management:**
+
+    ```toml
+    [mode.main.binding]
+    
+    # Open applications with Alt+Enter
+    alt-enter = 'exec-and-forget open -n /Applications/Alacritty.app'
+    
+    # Quick app switching
+    alt-shift-enter = 'exec-and-forget open -a "Google Chrome"'
+    
+    # Center current window
+    alt-c = 'move-node-to-monitor --wrap-around next'
+    
+    # Toggle fullscreen
+    alt-f = 'fullscreen'
+    
+    # Close window
+    alt-shift-q = 'close'
+    ```
+
+    ### Customizing Workspace Switching
+
+    Workspaces are configured at `aerospace/aerospace.toml:106-137`:
+
+    **Reduce number of workspaces:**
+
+    ```toml
+    [mode.main.binding]
+    # Only use numbered workspaces
+    alt-1 = 'workspace 1'
+    alt-2 = 'workspace 2'
+    alt-3 = 'workspace 3'
+    alt-4 = 'workspace 4'
+    alt-5 = 'workspace 5'
+    
+    # Move windows to workspaces
+    alt-shift-1 = 'move-node-to-workspace 1'
+    alt-shift-2 = 'move-node-to-workspace 2'
+    # ... etc
+    ```
+
+    **Custom workspace names:**
+
+    ```toml
+    # Use named workspaces for specific purposes
+    alt-w = 'workspace web'
+    alt-c = 'workspace code'
+    alt-t = 'workspace terminal'
+    alt-m = 'workspace music'
+    
+    alt-shift-w = 'move-node-to-workspace web'
+    alt-shift-c = 'move-node-to-workspace code'
+    alt-shift-t = 'move-node-to-workspace terminal'
+    alt-shift-m = 'move-node-to-workspace music'
+    ```
+
+    ### Configuring Layouts
+
+    Layout settings are at `aerospace/aerospace.toml:24-35`:
+
+    ```toml
+    # The 'accordion-padding' specifies the size of accordion padding
+    accordion-padding = 30
+
+    # Possible values: tiles|accordion
+    default-root-container-layout = 'tiles'
+
+    # Possible values: horizontal|vertical|auto
+    default-root-container-orientation = 'auto'
+    ```
+
+    **Customize layouts:**
+
+    ```toml
+    # Prefer accordion layout
+    default-root-container-layout = 'accordion'
+    
+    # Always use horizontal orientation
+    default-root-container-orientation = 'horizontal'
+    
+    # Increase accordion padding
+    accordion-padding = 50
+    ```
+
+    **Layout switching keybindings** at `aerospace/aerospace.toml:87-88`:
+
+    ```toml
+    # Toggle between layouts
+    alt-slash = 'layout tiles horizontal vertical'
+    alt-comma = 'layout accordion horizontal vertical'
+    ```
+
+    ### Service Mode Customization
+
+    Service mode provides advanced operations at `aerospace/aerospace.toml:182-192`:
+
+    ```toml
+    [mode.service.binding]
+    esc = ['reload-config', 'mode main']
+    r = ['flatten-workspace-tree', 'mode main'] # reset layout
+    f = ['layout floating tiling', 'mode main'] # Toggle floating
+    backspace = ['close-all-windows-but-current', 'mode main']
+    ```
+
+    **Add more service mode commands:**
+
+    ```toml
+    [mode.service.binding]
+    esc = ['reload-config', 'mode main']
+    r = ['flatten-workspace-tree', 'mode main']
+    f = ['layout floating tiling', 'mode main']
+    
+    # Add custom commands
+    q = ['close-all-windows-but-current', 'mode main']
+    m = ['fullscreen', 'mode main']
+    b = ['balance-sizes', 'mode main']
+    ```
+
+    ### Auto-start Applications
+
+    Configure apps to launch at startup at `aerospace/aerospace.toml:14-15`:
+
+    ```toml
+    # Run after AeroSpace startup
+    after-startup-command = [
+        'exec-and-forget open -a Alacritty',
+        'exec-and-forget open -a "Google Chrome"',
+    ]
+    ```
+
+    ### Window Focus Behavior
+
+    Mouse behavior is configured at `aerospace/aerospace.toml:45-46`:
+
+    ```toml
+    # Mouse follows focus
+    on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+    on-focus-changed = "move-mouse window-lazy-center"
+    ```
+
+    **Disable mouse following:**
+
+    ```toml
+    # Comment out or remove these lines
+    # on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+    # on-focus-changed = "move-mouse window-lazy-center"
+    ```
+
+    <Note>
+    After changing the AeroSpace configuration, reload it by pressing `Alt+Shift+;` then `Esc` (enters service mode and reloads).
+    </Note>
+  </Tab>
+</Tabs>
+
+## Best Practices
+
+<CardGroup cols={2}>
+  <Card title="Version Control" icon="git">
+    Keep your configurations in version control. Before making major changes:
+    
+    ```bash
+    cd ~/desktop-config
+    git add .
+    git commit -m "Backup before customization"
+    ```
+  </Card>
+  
+  <Card title="Incremental Changes" icon="arrows-turn-to-dots">
+    Make one change at a time and test it before moving on. This makes it easier to identify what breaks.
+  </Card>
+  
+  <Card title="Document Your Changes" icon="note">
+    Add comments to your configuration files explaining why you made specific changes.
+  </Card>
+  
+  <Card title="Backup Originals" icon="copy">
+    Keep backup copies of working configurations before experimenting with major changes.
+  </Card>
+</CardGroup>
+
+## Common Customization Workflows
+
+### Creating a Unified Color Scheme
+
+To maintain consistency across all tools:
+
+1. **Choose a base theme** (e.g., Catppuccin Mocha)
+2. **Apply to Alacritty:** Import `catppuccin_mocha.toml`
+3. **Apply to Neovim:** Set colorscheme to `catppuccin-mocha`
+4. **Apply to Tmux:** Use `@plugin 'catppuccin/tmux'`
+
+### Optimizing for Your Workflow
+
+**For development:**
+```toml
+# AeroSpace: Quick access to dev tools
+alt-t = 'workspace terminal'
+alt-b = 'workspace browser'
+alt-e = 'workspace editor'
+```
+
+**For content creation:**
+```lua
+-- Neovim: Add writing-focused plugins
+{
+  "folke/zen-mode.nvim",
+  cmd = "ZenMode",
+  opts = {
+    window = { width = 90 },
+  },
+}
+```
+
+### Performance Optimization
+
+**Neovim - Reduce startup time:**
+```lua
+-- In lua/config/lazy.lua
+defaults = {
+  lazy = true,  -- Lazy-load all custom plugins
+}
+```
+
+**Alacritty - Reduce memory usage:**
+```toml
+[scrolling]
+history = 5000  # Reduce from 10000
+```
+
+## Troubleshooting Customizations
+
+<AccordionGroup>
+  <Accordion title="Configuration changes not taking effect">
+    **Neovim:** Restart Neovim and run `:Lazy sync`
+    
+    **Alacritty:** Should auto-reload, but try restarting the terminal
+    
+    **Tmux:** Press `Ctrl+Space` + `:source-file ~/.tmux.conf`
+    
+    **AeroSpace:** Press `Alt+Shift+;` then `Esc`
+  </Accordion>
+
+  <Accordion title="Syntax errors in configuration">
+    **TOML files (Alacritty/AeroSpace):** Check for proper quotes and brackets
+    
+    **Lua files (Neovim):** Run `:luafile %` to check for syntax errors
+    
+    **Tmux:** Run `tmux source-file ~/.tmux.conf` in terminal to see errors
+  </Accordion>
+
+  <Accordion title="Plugin conflicts in Neovim">
+    Use `:Lazy` to see plugin status and errors. Check `:checkhealth` for issues.
+    
+    Disable suspicious plugins one at a time to identify conflicts.
+  </Accordion>
+</AccordionGroup>
+
+## Resources
+
+- [LazyVim Documentation](https://www.lazyvim.org/)
+- [Alacritty Configuration](https://alacritty.org/config-alacritty.html)
+- [Tmux Manual](https://man.openbsd.org/tmux.1)
+- [AeroSpace Guide](https://nikitabobko.github.io/AeroSpace/guide)
+
+<Tip>
+Join community discussions and share your customizations! Many users share their dotfiles on GitHub for inspiration.
+</Tip>

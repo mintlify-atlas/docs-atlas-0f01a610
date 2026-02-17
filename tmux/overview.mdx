@@ -1,0 +1,424 @@
+---
+title: 'Tmux Configuration'
+description: 'Overview of tmux terminal multiplexer configuration'
+---
+
+## Introduction
+
+Tmux is a terminal multiplexer that allows you to manage multiple terminal sessions, split windows, and persist sessions across disconnections. This configuration provides Vim-like keybindings, true color support, mouse integration, and a beautiful Catppuccin theme.
+
+## Configuration File
+
+The main configuration file is located at `~/.config/tmux/tmux.conf` or `~/.tmux.conf`.
+
+<Note>
+  After modifying the configuration, reload it with: `tmux source-file ~/.config/tmux/tmux.conf`
+</Note>
+
+## Complete Configuration
+
+```bash tmux.conf
+# Enable Vim keybindings in copy mode
+set-option -sa terminal-overrides ",xterm*:Tc:RGB:sitm=\E[3m:ritm=\E[23m"
+set -g default-terminal "tmux-256color"
+setw -g mode-keys vi
+set -ga terminal-overrides ',xterm-256color:Tc'
+set -g renumber-windows on
+set -g base-index 1
+
+# remap prefix from 'C-b' to 'C-a'
+unbind C-b
+set -g prefix C-Space
+bind C-Space send-prefix
+
+set -as terminal-overrides ',xterm*:sitm=\E[3m'
+set-option -sg escape-time 10
+set-option -g focus-events on
+set -g mouse on
+
+# Enter copy mode with Prefix+[
+bind-key [ copy-mode
+
+# Vim-like navigation in copy mode
+bind-key -T copy-mode-vi 'v' send -X begin-selection
+bind-key -T copy-mode-vi 'y' send -X copy-selection
+bind-key -T copy-mode-vi 'V' send -X rectangle-toggle
+
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'dreamsofcode-io/catppuccin-tmux'
+# set -g @plugin 'catppuccin/tmux'
+
+run '~/.tmux/plugins/tpm/tpm'
+```
+
+## Key Features
+
+### True Color Support
+
+```bash
+set-option -sa terminal-overrides ",xterm*:Tc:RGB:sitm=\E[3m:ritm=\E[23m"
+set -g default-terminal "tmux-256color"
+set -ga terminal-overrides ',xterm-256color:Tc'
+```
+
+<Tabs>
+  <Tab title="What It Does">
+    Enables 24-bit true color support in tmux, allowing for millions of colors instead of just 256. This ensures your terminal themes and color schemes render correctly.
+  </Tab>
+  
+  <Tab title="Why It Matters">
+    Modern terminal themes (like Tokyo Night, Catppuccin, Nord) rely on true color support for accurate color representation. Without it, colors may appear washed out or incorrect.
+  </Tab>
+  
+  <Tab title="Italic Support">
+    The `sitm=\E[3m:ritm=\E[23m` sequences enable proper italic text rendering in tmux, useful for syntax highlighting in editors.
+  </Tab>
+</Tabs>
+
+### Custom Prefix Key
+
+<Note>
+  The prefix key has been changed from the default `Ctrl+b` to `Ctrl+Space` for easier access and ergonomics.
+</Note>
+
+```bash
+# remap prefix from 'C-b' to 'C-a'
+unbind C-b
+set -g prefix C-Space
+bind C-Space send-prefix
+```
+
+**Usage:**
+- Press `Ctrl+Space` followed by any tmux command
+- Example: `Ctrl+Space` then `c` creates a new window
+- Example: `Ctrl+Space` then `%` splits horizontally
+
+<Warning>
+  If you're used to the default `Ctrl+b` prefix, this will require some adjustment. You can change it back by modifying these lines.
+</Warning>
+
+### Vim Keybindings
+
+The configuration enables Vim-style keybindings in copy mode:
+
+```bash
+setw -g mode-keys vi
+
+# Vim-like navigation in copy mode
+bind-key -T copy-mode-vi 'v' send -X begin-selection
+bind-key -T copy-mode-vi 'y' send -X copy-selection
+bind-key -T copy-mode-vi 'V' send -X rectangle-toggle
+```
+
+<Tabs>
+  <Tab title="Copy Mode Navigation">
+    In copy mode, use Vim keys to navigate:
+    - `h`, `j`, `k`, `l` - Move cursor left, down, up, right
+    - `w`, `b` - Jump forward/backward by word
+    - `0`, `$` - Jump to start/end of line
+    - `gg`, `G` - Jump to start/end of buffer
+    - `/`, `?` - Search forward/backward
+  </Tab>
+  
+  <Tab title="Text Selection">
+    - Press `v` to begin selection (visual mode)
+    - Press `V` to toggle rectangle selection
+    - Press `y` to copy (yank) the selected text
+    - Use Vim motion keys to extend selection
+  </Tab>
+  
+  <Tab title="Entering Copy Mode">
+    - `Prefix` + `[` enters copy mode
+    - `q` or `Esc` exits copy mode
+  </Tab>
+</Tabs>
+
+### Mouse Support
+
+```bash
+set -g mouse on
+```
+
+Mouse support is enabled, allowing you to:
+- Click to switch panes
+- Drag pane borders to resize
+- Scroll with the mouse wheel
+- Select text with the mouse
+- Right-click to paste (in some terminals)
+
+### Window Management
+
+```bash
+set -g renumber-windows on
+set -g base-index 1
+```
+
+<Accordion title="Window Renumbering">
+  `renumber-windows on` automatically renumbers windows when one is closed, preventing gaps in window numbers.
+  
+  Example:
+  - You have windows 1, 2, 3, 4
+  - Close window 2
+  - Windows automatically renumber to 1, 2, 3
+</Accordion>
+
+<Accordion title="Base Index">
+  `base-index 1` makes windows start at 1 instead of 0, making it easier to switch windows using number keys (1-9) at the top of the keyboard.
+</Accordion>
+
+### Performance Optimizations
+
+```bash
+set-option -sg escape-time 10
+set-option -g focus-events on
+```
+
+<Tabs>
+  <Tab title="Escape Time">
+    `escape-time 10` reduces the delay after pressing Escape from 500ms to 10ms. This is crucial for Vim users, making Escape in insert mode feel instant.
+  </Tab>
+  
+  <Tab title="Focus Events">
+    `focus-events on` allows programs running in tmux (like Vim) to receive focus events, enabling features like auto-reload on focus.
+  </Tab>
+</Tabs>
+
+## Plugin Management
+
+This configuration uses **TPM** (Tmux Plugin Manager) to manage plugins:
+
+```bash
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'dreamsofcode-io/catppuccin-tmux'
+
+run '~/.tmux/plugins/tpm/tpm'
+```
+
+### Installed Plugins
+
+<CardGroup cols={2}>
+  <Card title="TPM" icon="plug">
+    **Tmux Plugin Manager**
+    
+    The plugin manager itself, required to install and manage other plugins.
+    
+    [GitHub Repository](https://github.com/tmux-plugins/tpm)
+  </Card>
+  
+  <Card title="Catppuccin Theme" icon="palette">
+    **Catppuccin for Tmux**
+    
+    A beautiful, pastel-themed color scheme for tmux with customizable components.
+    
+    [GitHub Repository](https://github.com/dreamsofcode-io/catppuccin-tmux)
+  </Card>
+</CardGroup>
+
+### Installing TPM
+
+If TPM is not installed, install it with:
+
+```bash
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+```
+
+### Installing Plugins
+
+After adding plugins to your config:
+
+1. Reload tmux configuration: `tmux source-file ~/.config/tmux/tmux.conf`
+2. Install plugins: Press `Prefix` + `I` (capital i)
+3. Wait for plugins to install
+
+<Note>
+  Press `Prefix` + `U` to update plugins, or `Prefix` + `Alt+u` to uninstall removed plugins.
+</Note>
+
+## Theme Configuration
+
+The Catppuccin theme provides a modern, aesthetically pleasing appearance:
+
+```bash
+set -g @plugin 'dreamsofcode-io/catppuccin-tmux'
+```
+
+The theme includes:
+- Elegant status bar with system information
+- Window indicators with icons
+- Pane borders matching the color scheme
+- Integration with tmux status components
+
+<Accordion title="Alternative: Official Catppuccin Plugin">
+  The commented line shows an alternative Catppuccin plugin:
+  
+  ```bash
+  # set -g @plugin 'catppuccin/tmux'
+  ```
+  
+  You can switch to this version by commenting the current plugin and uncommenting this one, then running `Prefix` + `I` to install.
+</Accordion>
+
+## Installation Requirements
+
+<Steps>
+  <Step title="Install Tmux">
+    ```bash
+    # macOS
+    brew install tmux
+    
+    # Ubuntu/Debian
+    sudo apt install tmux
+    
+    # Arch Linux
+    sudo pacman -S tmux
+    
+    # Fedora
+    sudo dnf install tmux
+    ```
+  </Step>
+  
+  <Step title="Install TPM">
+    ```bash
+    git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+    ```
+  </Step>
+  
+  <Step title="Copy Configuration">
+    ```bash
+    # Create config directory
+    mkdir -p ~/.config/tmux
+    
+    # Copy or symlink your config
+    cp tmux.conf ~/.config/tmux/tmux.conf
+    
+    # Or use traditional location
+    cp tmux.conf ~/.tmux.conf
+    ```
+  </Step>
+  
+  <Step title="Start Tmux and Install Plugins">
+    ```bash
+    # Start tmux
+    tmux
+    
+    # Install plugins (inside tmux)
+    # Press: Ctrl+Space then Shift+I
+    ```
+  </Step>
+</Steps>
+
+## Basic Usage
+
+<Tabs>
+  <Tab title="Sessions">
+    ```bash
+    # Create new session
+    tmux new -s session-name
+    
+    # List sessions
+    tmux ls
+    
+    # Attach to session
+    tmux attach -t session-name
+    
+    # Detach from session
+    Prefix + d
+    
+    # Kill session
+    tmux kill-session -t session-name
+    ```
+  </Tab>
+  
+  <Tab title="Windows">
+    ```bash
+    # Create window
+    Prefix + c
+    
+    # Next/previous window
+    Prefix + n  # next
+    Prefix + p  # previous
+    
+    # Switch to window number
+    Prefix + 0-9
+    
+    # Rename window
+    Prefix + ,
+    
+    # Close window
+    Prefix + &
+    ```
+  </Tab>
+  
+  <Tab title="Panes">
+    ```bash
+    # Split horizontally
+    Prefix + %
+    
+    # Split vertically
+    Prefix + "
+    
+    # Navigate panes
+    Prefix + arrow keys
+    
+    # Resize panes
+    Prefix + Ctrl + arrow keys
+    
+    # Close pane
+    Prefix + x
+    
+    # Toggle pane zoom
+    Prefix + z
+    ```
+  </Tab>
+  
+  <Tab title="Copy Mode">
+    ```bash
+    # Enter copy mode
+    Prefix + [
+    
+    # Navigate with Vim keys
+    h, j, k, l
+    
+    # Start selection
+    v
+    
+    # Copy selection
+    y
+    
+    # Exit copy mode
+    q or Esc
+    ```
+  </Tab>
+</Tabs>
+
+## Reload Configuration
+
+After making changes to `tmux.conf`:
+
+```bash
+# From command line
+tmux source-file ~/.config/tmux/tmux.conf
+
+# Or inside tmux
+Prefix + :  # Enter command mode
+source-file ~/.config/tmux/tmux.conf
+```
+
+<Note>
+  Consider adding a keybinding to reload configuration quickly:
+  ```bash
+  bind r source-file ~/.config/tmux/tmux.conf \; display "Config reloaded!"
+  ```
+  Then use `Prefix + r` to reload.
+</Note>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Keybindings Reference" icon="keyboard" href="/tmux/keybindings">
+    Complete list of all keybindings and shortcuts
+  </Card>
+  <Card title="Advanced Usage" icon="rocket" href="/tmux/advanced">
+    Learn advanced tmux techniques and workflows
+  </Card>
+</CardGroup>
