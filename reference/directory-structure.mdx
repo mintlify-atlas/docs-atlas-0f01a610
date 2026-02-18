@@ -1,0 +1,178 @@
+---
+title: Directory Structure
+description: Complete directory structure reference for the desktop configuration repository
+---
+
+# Directory Structure
+
+This page documents the complete structure of the desktop configuration repository, including all configuration files for Neovim, Tmux, Alacritty, and AeroSpace.
+
+## Repository Overview
+
+```
+.
+├── README.md                    # Repository description
+├── aerospace/                   # AeroSpace window manager configuration
+├── alacritty/                   # Alacritty terminal emulator configuration
+├── nvim/                        # Neovim configuration (LazyVim-based)
+└── tmux/                        # Tmux terminal multiplexer configuration
+```
+
+## AeroSpace Configuration
+
+```
+aerospace/
+└── aerospace.toml              # Main AeroSpace configuration file
+```
+
+**Key Configuration:**
+- Window management keybindings
+- Workspace definitions (1-9, A-Z)
+- Layout settings (tiles, accordion)
+- Gap and padding configuration
+- Service mode bindings
+- Monitor and focus behavior
+
+## Alacritty Configuration
+
+```
+alacritty/
+├── alacritty.toml              # Main Alacritty configuration
+└── themes/                     # Theme collection
+    ├── LICENSE
+    ├── README.md
+    ├── print_colors.sh         # Script to preview color themes
+    ├── images/                 # Theme preview images
+    │   ├── Cobalt2.png
+    │   ├── catppuccin_mocha.png
+    │   ├── dracula.png
+    │   ├── gruvbox_dark.png
+    │   ├── tokyo_night.png
+    │   └── ... (100+ theme previews)
+    └── themes/                 # Theme definitions
+        ├── Cobalt2.toml
+        ├── catppuccin_mocha.toml
+        ├── coolnight.toml      # Currently active theme
+        ├── dracula.toml
+        ├── gruvbox_dark.toml
+        ├── tokyo_night.toml
+        └── ... (100+ themes)
+```
+
+**Key Configuration:**
+- Font: 0xProto Nerd Font Mono (size 16)
+- Active theme: coolnight
+- Window opacity: 0.8 with blur
+- Window decorations: Buttonless
+- Padding: 10px horizontal and vertical
+- Startup mode: Maximized
+
+## Neovim Configuration
+
+```
+nvim/
+├── init.lua                    # Entry point for Neovim configuration
+├── lazy-lock.json              # Lazy.nvim plugin version lock file
+├── lazyvim.json                # LazyVim configuration metadata
+├── stylua.toml                 # Lua formatter configuration
+├── .neoconf.json               # Neoconf plugin settings
+├── LICENSE
+├── README.md
+└── lua/                        # Lua configuration directory
+    ├── config/                 # Core configuration
+    │   ├── autocmds.lua        # Auto commands
+    │   ├── keymaps.lua         # Custom keymaps (inherits LazyVim defaults)
+    │   ├── lazy.lua            # Lazy.nvim plugin manager setup
+    │   └── options.lua         # Neovim options and settings
+    └── plugins/                # Plugin configurations
+        ├── colorscheme.lua     # Colorscheme configuration
+        ├── example.lua         # Example plugin configuration
+        ├── leetcode.lua        # LeetCode plugin setup
+        ├── mason-workaround.lua # Mason LSP workaround
+        ├── obsidian.lua        # Obsidian.nvim for markdown notes
+        ├── snacks-config.lua   # Snacks.nvim configuration
+        ├── tab-complete.lua    # Custom Tab completion behavior
+        └── vimbegood.lua       # VimBeGood practice plugin
+```
+
+**Key Configuration:**
+- **Base:** LazyVim distribution (preconfigured Neovim setup)
+- **Plugin Manager:** lazy.nvim
+- **Root Detection:** Set to current working directory
+- **Custom Plugins:**
+  - Obsidian.nvim for markdown note-taking
+  - LeetCode.nvim for coding practice
+  - VimBeGood for Vim motion practice
+  - Custom tab completion with nvim-cmp
+
+### Important Files
+
+| File | Purpose |
+|------|--------|
+| `init.lua` | Neovim entry point, bootstraps configuration |
+| `lua/config/lazy.lua` | Initializes lazy.nvim plugin manager |
+| `lua/config/options.lua` | Sets Vim options (root detection, etc.) |
+| `lua/config/keymaps.lua` | Custom keybindings (extends LazyVim defaults) |
+| `lua/config/autocmds.lua` | Automatic commands for events |
+| `lazy-lock.json` | Locks plugin versions for reproducibility |
+
+## Tmux Configuration
+
+```
+tmux/
+├── tmux.conf                   # Main Tmux configuration file
+└── plugins/                    # Tmux Plugin Manager (TPM) plugins
+    ├── tpm/                    # Tmux Plugin Manager
+    └── catppuccin-tmux/        # Catppuccin theme for Tmux
+```
+
+**Key Configuration:**
+- Prefix key: `Ctrl-Space` (changed from default `Ctrl-b`)
+- Vi mode keybindings enabled
+- Mouse support enabled
+- Window base index: 1 (instead of 0)
+- Terminal: tmux-256color with true color support
+- Copy mode with Vim-style selection
+
+## Configuration File Locations
+
+When deployed, these configurations should be symlinked to:
+
+| Tool | Source | Target |
+|------|--------|--------|
+| **AeroSpace** | `aerospace/aerospace.toml` | `~/.aerospace.toml` |
+| **Alacritty** | `alacritty/alacritty.toml` | `~/.config/alacritty/alacritty.toml` |
+| **Alacritty Themes** | `alacritty/themes/` | `~/.config/alacritty/themes/` |
+| **Neovim** | `nvim/` | `~/.config/nvim/` |
+| **Tmux** | `tmux/tmux.conf` | `~/.tmux.conf` |
+| **Tmux Plugins** | `tmux/plugins/` | `~/.tmux/plugins/` |
+
+## Plugin Directories
+
+### Tmux Plugins
+
+Managed by [Tmux Plugin Manager (TPM)](https://github.com/tmux-plugins/tpm):
+
+- **tpm**: Plugin manager itself
+- **catppuccin-tmux**: Catppuccin color theme
+
+### Neovim Plugins
+
+Managed by [lazy.nvim](https://github.com/folke/lazy.nvim). Plugin specifications are defined in `nvim/lua/plugins/*.lua` files. The full plugin list and versions are locked in `nvim/lazy-lock.json`.
+
+## Theme Files
+
+The Alacritty themes directory contains 100+ color schemes. Notable themes include:
+
+- **Currently Active**: coolnight
+- **Popular Options**: catppuccin (multiple variants), dracula, gruvbox, nord, tokyo-night, solarized
+- **Theme Format**: TOML files defining color palettes
+- **Preview Images**: Available in `alacritty/themes/images/` for visual selection
+
+To change themes, update the import path in `alacritty/alacritty.toml`:
+
+```toml
+general.import = [
+    "~/.config/alacritty/themes/themes/coolnight.toml"
+]
+```

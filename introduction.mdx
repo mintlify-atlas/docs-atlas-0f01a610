@@ -1,132 +1,120 @@
 ---
 title: Introduction
-description: A powerful, curated desktop configuration for developers on macOS
+description: A curated collection of desktop configuration files for a powerful development environment
 ---
 
-## Welcome to Your Developer Workspace
+<img
+  className="block dark:hidden"
+  src="/images/hero-light.svg"
+  alt="Hero Light"
+/>
+<img
+  className="hidden dark:block"
+  src="/images/hero-dark.svg"
+  alt="Hero Dark"
+/>
 
-This is a comprehensive desktop configuration repository designed for developers who value productivity, aesthetics, and seamless workflow integration. Built around modern, battle-tested tools, this configuration provides everything you need to create a powerful development environment on macOS.
+## Welcome to Your Ultimate Development Setup
+
+This is a carefully crafted collection of configuration files designed to create a seamless, efficient, and aesthetically pleasing development environment on macOS. Built around powerful tools like Neovim with LazyVim, Tmux, Alacritty, and AeroSpace, this setup emphasizes keyboard-driven workflows and minimal distractions.
+
+## Configuration Components
 
 <CardGroup cols={2}>
   <Card
-    title="Neovim Configuration"
+    title="Neovim with LazyVim"
     icon="code"
-    href="/neovim/overview"
+    href="#neovim"
   >
-    LazyVim-based setup with custom plugins for Obsidian, LeetCode, and enhanced tab completion
+    Modern, highly extensible code editor with IDE-like features powered by LazyVim's plugin ecosystem
   </Card>
   <Card
-    title="Terminal Setup"
+    title="Tmux"
+    icon="table-columns"
+    href="#tmux"
+  >
+    Terminal multiplexer with Catppuccin theme and Vim-style keybindings for efficient session management
+  </Card>
+  <Card
+    title="Alacritty"
     icon="terminal"
-    href="/terminal/alacritty"
+    href="#alacritty"
   >
-    Alacritty configuration with 150+ themes, custom opacity, and optimized font rendering
+    GPU-accelerated terminal emulator with custom themes, blur effects, and 0xProto Nerd Font
   </Card>
   <Card
-    title="Window Management"
+    title="AeroSpace"
     icon="window-maximize"
-    href="/window-manager/aerospace"
+    href="#aerospace"
   >
-    AeroSpace tiling window manager with Vim-style keybindings for efficient window control
-  </Card>
-  <Card
-    title="Tmux Configuration"
-    icon="grid-2"
-    href="/terminal/tmux"
-  >
-    Terminal multiplexer with Vim keybindings and Catppuccin theme integration
+    Tiling window manager for macOS with i3-inspired keybindings and advanced workspace management
   </Card>
 </CardGroup>
 
-## What's Inside
+## Key Features
 
-This configuration repository brings together four essential components of a modern development environment:
+### Neovim Configuration
 
-### Neovim with LazyVim
+Built on top of the LazyVim distribution, this Neovim setup includes:
 
-A powerful, extensible text editor configuration built on top of [LazyVim](https://lazyvim.github.io/), featuring:
+- **Rich Color Scheme Collection**: Multiple themes including OneDark (default), Kanagawa, Gruvbox, Rose Pine, TokyoDark, Everforest, and PaperColor
+- **Obsidian Integration**: Native markdown editing with vault synchronization for note-taking workflows
+- **LeetCode Plugin**: Practice coding problems directly within Neovim with Python3 support
+- **Custom Tab Completion**: Enhanced autocomplete experience tailored to your workflow
+- **Snacks Configuration**: Additional UI enhancements and utilities
+- **Vim Be Good**: Practice and improve your Vim motions
 
-- **Smart Plugin Management**: Lazy-loaded plugins for optimal startup performance
-- **Multiple Colorschemes**: Kanagawa, PaperColor, Gruvbox, Rose Pine, TokyoDark, Everforest, and OneDark
-- **Obsidian Integration**: Seamless note-taking with the Obsidian.nvim plugin
-- **LeetCode Support**: Practice coding challenges directly in your editor
-- **Enhanced Autocompletion**: Custom tab completion configuration for better development experience
-- **Vim Practice**: Built-in VimBeGood plugin for improving your Vim skills
+### Tmux Setup
+
+A productivity-focused terminal multiplexer configuration featuring:
+
+- **Catppuccin Theme**: Beautiful, eye-friendly color scheme from Dreams of Code
+- **Space Prefix**: Remapped from `Ctrl+b` to `Ctrl+Space` for easier access
+- **Vim Keybindings**: Full Vi-mode support in copy mode with familiar `v`, `y`, `V` selections
+- **True Color Support**: 256-color and RGB color support for modern terminals
+- **Smart Window Management**: Auto-renumbering windows, 1-based indexing, mouse support
+- **TPM Plugin Manager**: Easy plugin installation and updates
 
 ### Alacritty Terminal
 
-A GPU-accelerated terminal emulator that's both beautiful and performant:
+A blazingly fast GPU-accelerated terminal with:
 
-- **150+ Themes**: Extensive theme collection including Catppuccin, Tokyo Night, Dracula, Nord, and more
-- **Optimized Display**: Custom opacity (0.8), blur effects, and buttonless window decorations
-- **Modern Typography**: 0xProto Nerd Font Mono at 16pt for excellent readability
-- **Full 256-color Support**: True color rendering for beautiful syntax highlighting
-- **Maximized by Default**: Launches in fullscreen for maximum workspace
-
-### Tmux Configuration
-
-Professional terminal multiplexing with an emphasis on productivity:
-
-- **Vim Keybindings**: Navigate and manage panes with familiar Vim motions
-- **Custom Prefix**: Uses `Ctrl+Space` instead of the default `Ctrl+b`
-- **Catppuccin Theme**: Beautiful, consistent theming across your terminal environment
-- **Copy Mode**: Vim-style visual selection with `v`, `y`, and `V` keys
-- **TPM Integration**: Tmux Plugin Manager for easy plugin installation
-- **Mouse Support**: Optional mouse interaction for convenience
-- **True Color Support**: 256-color terminal with RGB and italics support
+- **0xProto Nerd Font**: Monospace font with programming ligatures and icon support at 16pt
+- **Cool Night Theme**: Custom color scheme for comfortable long coding sessions
+- **Visual Effects**: 80% opacity with blur effects for a modern aesthetic
+- **Generous Padding**: 10px horizontal and vertical padding for better readability
+- **Buttonless Decorations**: Clean, distraction-free window chrome on macOS
+- **Maximized Startup**: Opens full-screen ready for immediate productivity
+- **Extensive Theme Collection**: Includes 100+ pre-configured themes (Tokyo Night, Nord, Solarized, Rose Pine, and more)
 
 ### AeroSpace Window Manager
 
-A tiling window manager specifically designed for macOS:
+A powerful i3-like tiling window manager designed specifically for macOS:
 
-- **Vim-Style Navigation**: Use `Alt+h/j/k/l` to move between windows
-- **Flexible Layouts**: Switch between tiles and accordion layouts on the fly
-- **Multiple Workspaces**: Support for numbered (1-9) and lettered (A-Z) workspaces
-- **Smart Resizing**: Intelligent window resizing with `Alt+Shift+-/=`
-- **Service Mode**: Advanced window management features accessible via `Alt+Shift+;`
-- **Mouse Integration**: Automatically centers mouse on focused window
-- **Auto-normalization**: Smart container flattening and orientation handling
+- **Vim-Style Navigation**: Use `Alt+h/j/k/l` to move focus between windows
+- **Extensive Workspace Support**: 9 numbered workspaces plus 26 letter-named workspaces (A-Z)
+- **Multiple Layout Modes**: Tiles (horizontal/vertical) and accordion layouts
+- **Mouse Follows Focus**: Automatic cursor positioning for seamless navigation
+- **Smart Window Management**: Automatic container normalization and orientation
+- **Service Mode**: Advanced operations like config reload, layout reset, floating toggle
+- **Zero Gaps**: Clean edge-to-edge window arrangements
+- **Auto-start on Login**: Launches automatically with your macOS session
 
-## Key Features
+## Philosophy
 
-<AccordionGroup>
-  <Accordion title="Unified Color Scheme">
-    All components are configured to work harmoniously together. The default setup uses the OneDark colorscheme in Neovim and Coolnight theme in Alacritty, with Catppuccin accents in Tmux.
-  </Accordion>
+This configuration emphasizes:
 
-  <Accordion title="Vim-Centric Workflow">
-    Every tool in this configuration supports Vim keybindings and workflows. Navigate your editor, terminal multiplexer, and window manager with the same muscle memory.
-  </Accordion>
+- **Keyboard-First Workflow**: Minimize mouse usage with comprehensive keybindings
+- **Consistent Vim Keybindings**: Vim motions across all tools for muscle memory
+- **Visual Harmony**: Coordinated color schemes and aesthetics across all applications
+- **Performance**: Fast, efficient tools that don't slow you down
+- **Extensibility**: Well-organized configuration files that are easy to customize
+- **Productivity**: Thoughtful defaults that reduce friction in daily development tasks
 
-  <Accordion title="Performance Optimized">
-    From Alacritty's GPU acceleration to LazyVim's lazy-loaded plugins, every component is configured for maximum performance without sacrificing features.
-  </Accordion>
-
-  <Accordion title="Easily Customizable">
-    All configuration files are well-organized and documented. Change themes, keybindings, and behaviors without diving into complex documentation.
-  </Accordion>
-
-  <Accordion title="Developer-Focused">
-    Built with real development workflows in mind, including support for note-taking (Obsidian), coding practice (LeetCode), and efficient window management.
-  </Accordion>
-</AccordionGroup>
-
-## Who Is This For?
-
- This configuration is ideal for:
-
-- Developers transitioning to or optimizing their macOS setup
-- Vim/Neovim enthusiasts who want a cohesive, keyboard-driven environment
-- Anyone seeking a beautiful, productive terminal-based workflow
-- Developers who value open-source, community-driven tools
-- Those who want a solid foundation they can customize to their needs
-
-<Note>
-  This configuration is specifically designed for macOS. While the Neovim, Alacritty, and Tmux configurations are cross-platform, AeroSpace is macOS-exclusive. Linux users should consider alternative tiling window managers like i3, sway, or bspwm.
-</Note>
-
-## Getting Started
+## What's Next?
 
 Ready to transform your development environment? Head over to the [Installation Guide](/installation) to get started with setting up these configurations on your machine.
 
-If you're new to any of these tools, don't worry - each section includes detailed guides, customization tips, and common workflows to help you get productive quickly.
+<Note>
+  This setup is optimized for macOS due to AeroSpace being macOS-specific. However, Neovim, Tmux, and Alacritty configurations are cross-platform compatible.
+</Note>

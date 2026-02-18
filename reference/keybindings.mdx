@@ -1,0 +1,397 @@
+---
+title: Keybindings Reference
+description: Comprehensive keybinding reference for all tools in the desktop configuration
+---
+
+# Keybindings Reference
+
+This page documents all keybindings across AeroSpace, Tmux, and Neovim. Use this as a quick reference for keyboard shortcuts.
+
+## AeroSpace Window Manager
+
+AeroSpace uses the `Alt` key as the primary modifier for all window management operations.
+
+### Workspace Switching
+
+| Keybinding | Action |
+|------------|--------|
+| `Alt-1` through `Alt-9` | Switch to workspace 1-9 |
+| `Alt-A` | Switch to workspace A |
+| `Alt-B` | Switch to workspace B |
+| `Alt-C` | Switch to workspace C |
+| `Alt-D` | Switch to workspace D |
+| `Alt-E` | Switch to workspace E |
+| `Alt-F` | Switch to workspace F |
+| `Alt-G` | Switch to workspace G |
+| `Alt-I` | Switch to workspace I |
+| `Alt-M` | Switch to workspace M |
+| `Alt-N` | Switch to workspace N |
+| `Alt-O` | Switch to workspace O |
+| `Alt-P` | Switch to workspace P |
+| `Alt-Q` | Switch to workspace Q |
+| `Alt-R` | Switch to workspace R |
+| `Alt-S` | Switch to workspace S |
+| `Alt-T` | Switch to workspace T |
+| `Alt-U` | Switch to workspace U |
+| `Alt-V` | Switch to workspace V |
+| `Alt-W` | Switch to workspace W |
+| `Alt-X` | Switch to workspace X |
+| `Alt-Y` | Switch to workspace Y |
+| `Alt-Z` | Switch to workspace Z |
+| `Alt-Tab` | Switch to previously focused workspace |
+
+### Window Focus (Vim-style Navigation)
+
+| Keybinding | Action |
+|------------|--------|
+| `Alt-H` | Focus window to the left |
+| `Alt-J` | Focus window below |
+| `Alt-K` | Focus window above |
+| `Alt-L` | Focus window to the right |
+
+### Window Movement
+
+| Keybinding | Action |
+|------------|--------|
+| `Alt-Shift-H` | Move window left |
+| `Alt-Shift-J` | Move window down |
+| `Alt-Shift-K` | Move window up |
+| `Alt-Shift-L` | Move window right |
+
+### Move Window to Workspace
+
+| Keybinding | Action |
+|------------|--------|
+| `Alt-Shift-1` through `Alt-Shift-9` | Move window to workspace 1-9 |
+| `Alt-Shift-A` through `Alt-Shift-Z` | Move window to corresponding letter workspace |
+| `Alt-Shift-Tab` | Move workspace to next monitor (wraps around) |
+
+### Layout Management
+
+| Keybinding | Action |
+|------------|--------|
+| `Alt-/` | Toggle between horizontal and vertical tiles layout |
+| `Alt-,` | Toggle between horizontal and vertical accordion layout |
+| `Alt-Shift--` | Resize window smaller (smart resize -50px) |
+| `Alt-Shift-=` | Resize window larger (smart resize +50px) |
+
+### Service Mode
+
+| Keybinding | Action |
+|------------|--------|
+| `Alt-Shift-;` | Enter service mode |
+
+#### Service Mode Bindings
+
+Once in service mode, the following keys are available:
+
+| Keybinding | Action |
+|------------|--------|
+| `Esc` | Reload config and return to main mode |
+| `R` | Reset layout (flatten workspace tree) and return to main mode |
+| `F` | Toggle between floating and tiling layout, return to main mode |
+| `Backspace` | Close all windows except current, return to main mode |
+| `Alt-Shift-H` | Join with left window and return to main mode |
+| `Alt-Shift-J` | Join with window below and return to main mode |
+| `Alt-Shift-K` | Join with window above and return to main mode |
+| `Alt-Shift-L` | Join with right window and return to main mode |
+
+### Additional Features
+
+- **Mouse follows focus**: Automatically enabled when focus changes
+- **Gaps**: All gaps set to 0 (no spacing between windows)
+- **Default layout**: Tiles with auto orientation
+- **Normalization**: Enabled for container flattening and orientation
+
+---
+
+## Tmux Terminal Multiplexer
+
+### Prefix Key
+
+The prefix key has been changed from the default `Ctrl-B` to:
+
+```
+Ctrl-Space
+```
+
+All Tmux commands require pressing the prefix key first, then the command key.
+
+### Core Bindings
+
+| Keybinding | Action |
+|------------|--------|
+| `Ctrl-Space` | Prefix key (press before any command) |
+| `Prefix + [` | Enter copy mode |
+
+### Copy Mode (Vi-style)
+
+Tmux is configured with Vi-style keybindings for copy mode.
+
+#### Entering Copy Mode
+
+| Keybinding | Action |
+|------------|--------|
+| `Prefix + [` | Enter copy mode |
+
+#### Copy Mode Navigation
+
+Once in copy mode, use standard Vi navigation keys:
+
+| Keybinding | Action |
+|------------|--------|
+| `H` | Move cursor left |
+| `J` | Move cursor down |
+| `K` | Move cursor up |
+| `L` | Move cursor right |
+| `W` | Move forward one word |
+| `B` | Move backward one word |
+| `0` | Move to beginning of line |
+| `$` | Move to end of line |
+| `G` | Go to bottom |
+| `gg` | Go to top |
+| `/` | Search forward |
+| `?` | Search backward |
+| `N` | Next search result |
+| `n` | Previous search result |
+
+#### Copy Mode Selection
+
+| Keybinding | Action |
+|------------|--------|
+| `V` | Begin selection (visual mode) |
+| `V` (again) | Toggle rectangular selection |
+| `Y` | Copy selection to clipboard |
+| `Esc` or `Q` | Exit copy mode |
+
+### Mouse Support
+
+Mouse support is enabled:
+- Click to select panes
+- Drag to resize panes
+- Scroll to navigate history
+- Click and drag to select text
+
+### Window and Pane Management
+
+Tmux uses standard default keybindings for window and pane management:
+
+| Keybinding | Action |
+|------------|--------|
+| `Prefix + C` | Create new window |
+| `Prefix + N` | Next window |
+| `Prefix + P` | Previous window |
+| `Prefix + 0-9` | Switch to window number |
+| `Prefix + %` | Split pane vertically |
+| `Prefix + "` | Split pane horizontally |
+| `Prefix + X` | Close current pane |
+| `Prefix + Z` | Toggle pane zoom |
+| `Prefix + D` | Detach from session |
+| `Prefix + :` | Enter command mode |
+
+### Session Management
+
+| Keybinding | Action |
+|------------|--------|
+| `Prefix + S` | List and switch sessions |
+| `Prefix + $` | Rename current session |
+| `Prefix + (` | Previous session |
+| `Prefix + )` | Next session |
+
+### Configuration
+
+- **Base index**: Windows start at 1 (not 0)
+- **Renumber windows**: Automatically renumber when windows are closed
+- **Terminal**: tmux-256color with true color support
+- **Escape time**: 10ms for faster key response
+
+---
+
+## Neovim (LazyVim)
+
+Neovim uses the LazyVim distribution, which provides a comprehensive set of preconfigured keybindings. This configuration inherits all LazyVim defaults with minimal custom overrides.
+
+### Leader Key
+
+The leader key in LazyVim is:
+
+```
+Space
+```
+
+### Essential LazyVim Keybindings
+
+Below are the most commonly used keybindings from LazyVim. For the complete list, see the [LazyVim keymaps documentation](https://www.lazyvim.org/keymaps).
+
+#### General
+
+| Keybinding | Mode | Action |
+|------------|------|--------|
+| `<Leader>` | Normal | Leader key (Space) |
+| `<Esc>` | Insert/Visual | Exit to normal mode |
+| `<C-S>` | Normal/Insert/Visual | Save file |
+| `<Leader>qq` | Normal | Quit all |
+| `<Leader>ul` | Normal | Toggle line numbers |
+| `<Leader>ur` | Normal | Toggle relative line numbers |
+| `<Leader>uw` | Normal | Toggle word wrap |
+
+#### File Navigation
+
+| Keybinding | Mode | Action |
+|------------|------|--------|
+| `<Leader>ff` | Normal | Find files |
+| `<Leader>fr` | Normal | Recent files |
+| `<Leader>fg` | Normal | Grep text (live grep) |
+| `<Leader>fb` | Normal | Find buffers |
+| `<Leader>fe` | Normal | File explorer (Neo-tree) |
+| `<Leader>fE` | Normal | File explorer (cwd) |
+
+#### Window Management
+
+| Keybinding | Mode | Action |
+|------------|------|--------|
+| `<C-H>` | Normal | Go to left window |
+| `<C-J>` | Normal | Go to window below |
+| `<C-K>` | Normal | Go to window above |
+| `<C-L>` | Normal | Go to right window |
+| `<C-Up>` | Normal | Increase window height |
+| `<C-Down>` | Normal | Decrease window height |
+| `<C-Left>` | Normal | Decrease window width |
+| `<C-Right>` | Normal | Increase window width |
+| `<Leader>ww` | Normal | Other window |
+| `<Leader>wd` | Normal | Delete window |
+| `<Leader>w-` | Normal | Split window below |
+| `<Leader>w|` | Normal | Split window right |
+
+#### Buffer Management
+
+| Keybinding | Mode | Action |
+|------------|------|--------|
+| `<S-H>` | Normal | Previous buffer |
+| `<S-L>` | Normal | Next buffer |
+| `<Leader>bb` | Normal | Switch to other buffer |
+| `<Leader>bd` | Normal | Delete buffer |
+| `<Leader>bD` | Normal | Delete buffer and window |
+
+#### Code Navigation
+
+| Keybinding | Mode | Action |
+|------------|------|--------|
+| `gd` | Normal | Go to definition |
+| `gr` | Normal | Go to references |
+| `gI` | Normal | Go to implementation |
+| `gy` | Normal | Go to type definition |
+| `gD` | Normal | Go to declaration |
+| `K` | Normal | Show hover documentation |
+| `<Leader>ca` | Normal | Code actions |
+| `<Leader>cr` | Normal | Rename symbol |
+| `<Leader>cf` | Normal | Format document |
+
+#### Search and Replace
+
+| Keybinding | Mode | Action |
+|------------|------|--------|
+| `/` | Normal | Search forward |
+| `?` | Normal | Search backward |
+| `N` | Normal | Previous search result |
+| `n` | Normal | Next search result |
+| `<Leader>sr` | Normal | Replace in files |
+| `<Esc>` | Normal | Clear search highlights |
+
+#### Git Integration
+
+| Keybinding | Mode | Action |
+|------------|------|--------|
+| `<Leader>gg` | Normal | LazyGit |
+| `<Leader>gB` | Normal | Git browse |
+| `<Leader>gb` | Normal | Git blame line |
+| `<Leader>gf` | Normal | Git file history |
+| `]h` | Normal | Next git hunk |
+| `[h` | Normal | Previous git hunk |
+
+#### Terminal
+
+| Keybinding | Mode | Action |
+|------------|------|--------|
+| `<C-/>` | Normal | Toggle terminal |
+| `<Esc><Esc>` | Terminal | Enter normal mode in terminal |
+
+#### LSP and Diagnostics
+
+| Keybinding | Mode | Action |
+|------------|------|--------|
+| `]d` | Normal | Next diagnostic |
+| `[d` | Normal | Previous diagnostic |
+| `]e` | Normal | Next error |
+| `[e` | Normal | Previous error |
+| `]w` | Normal | Next warning |
+| `[w` | Normal | Previous warning |
+| `<Leader>cd` | Normal | Line diagnostics |
+| `<Leader>cl` | Normal | LSP info |
+
+### Custom Keybindings
+
+This configuration adds minimal custom keybindings.
+
+#### Completion (nvim-cmp)
+
+| Keybinding | Mode | Action |
+|------------|------|--------|
+| `<Tab>` | Insert | Accept completion (auto-selects first item if none selected) |
+| `<CR>` | Insert | Abort completion and insert newline |
+
+**Note**: The Tab behavior is customized to automatically confirm completion. If no item is selected, it selects and confirms the first item.
+
+#### Plugin-Specific Keybindings
+
+##### Obsidian.nvim
+
+Available in markdown files. Refer to the [Obsidian.nvim documentation](https://github.com/epwalsh/obsidian.nvim) for default keybindings.
+
+##### LeetCode.nvim
+
+Refer to the [LeetCode.nvim documentation](https://github.com/kawre/leetcode.nvim) for command usage and keybindings.
+
+### Additional Resources
+
+- **LazyVim Keymaps**: <https://www.lazyvim.org/keymaps>
+- **LazyVim Configuration**: <https://www.lazyvim.org/configuration>
+- **Custom Keymaps**: See `nvim/lua/config/keymaps.lua` (currently inherits defaults)
+
+---
+
+## Quick Reference Card
+
+### Most Common Operations
+
+| Task | Tool | Keybinding |
+|------|------|------------|
+| **Switch workspace** | AeroSpace | `Alt-1` to `Alt-9` or `Alt-A` to `Alt-Z` |
+| **Focus window** | AeroSpace | `Alt-H/J/K/L` (Vim directions) |
+| **Move window** | AeroSpace | `Alt-Shift-H/J/K/L` |
+| **Change layout** | AeroSpace | `Alt-/` (tiles) or `Alt-,` (accordion) |
+| **Enter Tmux copy mode** | Tmux | `Ctrl-Space [` |
+| **Copy in Tmux** | Tmux | `V` to select, `Y` to copy (in copy mode) |
+| **Find file** | Neovim | `Space f f` |
+| **Live grep** | Neovim | `Space f g` |
+| **Save file** | Neovim | `Ctrl-S` |
+| **Go to definition** | Neovim | `g d` |
+| **Show documentation** | Neovim | `K` |
+| **Open terminal** | Neovim | `Ctrl-/` |
+| **Git interface** | Neovim | `Space g g` (LazyGit) |
+
+### Mnemonic Patterns
+
+- **AeroSpace**: All commands use `Alt` as base modifier, `Shift` for move operations
+- **Tmux**: `Ctrl-Space` prefix, then Vi-style keys in copy mode
+- **Neovim**: `Space` leader key, two-letter mnemonics (e.g., `ff` = find files, `gg` = git)
+
+---
+
+## Notes
+
+- **AeroSpace** is macOS-specific and uses the Option/Alt key extensively
+- **Tmux** prefix has been changed from `Ctrl-B` to `Ctrl-Space` for ergonomics
+- **Neovim** uses LazyVim defaults with minimal customization
+- All tools prioritize Vim-style navigation (H, J, K, L) for consistency
+- Mouse support is enabled in both Tmux and Neovim where applicable

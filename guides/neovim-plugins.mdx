@@ -1,0 +1,338 @@
+---
+title: Neovim Plugins
+description: A comprehensive guide to all the Neovim plugins configured in this setup
+---
+
+This configuration uses LazyVim as a base and extends it with several custom plugins for enhanced functionality.
+
+## Plugin Configuration
+
+All plugins are configured using lazy.nvim and located in `nvim/lua/plugins/`. Each plugin file follows the lazy.nvim specification format.
+
+<Accordion title="Colorscheme Plugins">
+
+The colorscheme configuration includes multiple themes to choose from, with OneDark set as the default.
+
+**File:** `nvim/lua/plugins/colorscheme.lua`
+
+```lua
+return {
+  { "rebelot/kanagawa.nvim" },
+  { "NLKNguyen/papercolor-theme" },
+  { "ellisonleao/gruvbox.nvim" },
+  { "rose-pine/neovim" },
+  { "tiagovla/tokyodark.nvim" },
+  { "sainnhe/everforest" },
+  {
+    "navarasu/onedark.nvim",
+    opts = {
+      highlights = {
+        Visual = { bg = "#ffff00" },
+      },
+    },
+  },
+  {
+    "LazyVim/LazyVim",
+    opts = {
+      colorscheme = "onedark",
+    },
+  },
+}
+```
+
+**Available Colorschemes:**
+- **Kanagawa** - Inspired by the colors of the famous painting
+- **PaperColor** - Light and dark themes inspired by Google's Material Design
+- **Gruvbox** - Retro groove color scheme
+- **Rose Pine** - All natural pine, faux fur and a bit of soho vibes
+- **TokyoDark** - A clean dark theme
+- **Everforest** - Comfortable & pleasant green forest color scheme
+- **OneDark** (default) - Atom's iconic One Dark theme with custom yellow visual selection
+
+**Customizations:**
+- Visual selection background is set to bright yellow (`#ffff00`) for better visibility
+
+</Accordion>
+
+<Accordion title="LeetCode Plugin">
+
+Integrates LeetCode directly into Neovim for practicing coding problems without leaving your editor.
+
+**File:** `nvim/lua/plugins/leetcode.lua`
+
+```lua
+return {
+  "kawre/leetcode.nvim",
+  build = ":TSUpdate html",
+  dependencies = {
+    "nvim-telescope/telescope.nvim",
+    "nvim-lua/plenary.nvim",
+    "MunifTanjim/nui.nvim",
+  },
+  opts = {
+    lang = "python3",
+  },
+}
+```
+
+**Features:**
+- Browse and solve LeetCode problems in Neovim
+- Configured to use Python3 as the default language
+- Integrates with Telescope for fuzzy finding problems
+- Requires HTML TreeSitter parser (installed via `:TSUpdate html`)
+
+**Usage:**
+- Open LeetCode menu to browse problems
+- Select a problem to start coding
+- Submit solutions directly from Neovim
+
+</Accordion>
+
+<Accordion title="Obsidian Integration">
+
+Seamless integration with Obsidian vault for note-taking and knowledge management.
+
+**File:** `nvim/lua/plugins/obsidian.lua`
+
+```lua
+return {
+  "epwalsh/obsidian.nvim",
+  version = "*",
+  lazy = true,
+  ft = "markdown",
+  dependencies = {
+    "nvim-lua/plenary.nvim",
+    "hrsh7th/nvim-cmp",
+  },
+  opts = {
+    workspaces = {
+      {
+        name = "personal",
+        path = "/Users/leylandyang/Library/Mobile Documents/iCloud~md~obsidian/Documents/Sharedvault",
+      },
+    },
+    completion = {
+      nvim_cmp = true,
+      min_chars = 2,
+    },
+    new_notes_location = "notes_subdir",
+    daily_notes = {
+      folder = "/daily notes",
+      date_format = "%m-%d-%Y",
+      alias_format = "%B %-d, %Y",
+      default_tags = { "daily-notes" },
+      template = nil,
+    },
+  },
+}
+```
+
+**Features:**
+- Lazy-loaded only for markdown files
+- Autocomplete for note links and tags (requires 2+ characters)
+- Daily notes support with custom date formatting
+- Integration with nvim-cmp for completions
+
+**Configuration:**
+- Workspace path points to iCloud-synced Obsidian vault
+- New notes are created in subdirectories
+- Daily notes use MM-DD-YYYY format
+- Daily notes are automatically tagged with `daily-notes`
+
+<Note>
+Update the `path` in the workspace configuration to match your Obsidian vault location.
+</Note>
+
+</Accordion>
+
+<Accordion title="Snacks Configuration">
+
+Customizes the Snacks picker to show hidden files and respect `.gitignore`.
+
+**File:** `nvim/lua/plugins/snacks-config.lua`
+
+```lua
+return {
+  {
+    "folke/snacks.nvim",
+    opts = {
+      picker = {
+        hidden = true,    -- for hidden files
+        ignored = true,   -- for .gitignore files
+      },
+    },
+  },
+}
+```
+
+**Features:**
+- Shows hidden files (dotfiles) in the picker
+- Respects `.gitignore` patterns when searching
+- Part of the Snacks.nvim collection of useful utilities
+
+</Accordion>
+
+<Accordion title="Tab Completion">
+
+Customizes nvim-cmp behavior for more intuitive tab completion.
+
+**File:** `nvim/lua/plugins/tab-complete.lua`
+
+```lua
+return {
+  {
+    "L3MON4D3/LuaSnip",
+    keys = function()
+      return {}
+    end,
+  },
+  {
+    "hrsh7th/nvim-cmp",
+    dependencies = {
+      "hrsh7th/cmp-emoji",
+    },
+    opts = function(_, opts)
+      local cmp = require("cmp")
+
+      opts.mapping = vim.tbl_extend("force", opts.mapping, {
+        ["<Tab>"] = cmp.mapping(function(fallback)
+          if cmp.visible() then
+            local entry = cmp.get_selected_entry()
+            if not entry then
+              cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+            else
+              cmp.confirm()
+            end
+          else
+            fallback()
+          end
+        end, { "i", "s" }),
+        ["<CR>"] = cmp.mapping(function(fallback)
+          cmp.abort()
+          fallback()
+        end, { "i", "s", "c" }),
+      }),
+    end,
+  },
+}
+```
+
+**Behavior:**
+- **Tab**: Confirms completion or selects first item if none selected
+- **Enter**: Aborts completion and creates a new line (doesn't auto-confirm)
+- Adds emoji completion support via `cmp-emoji`
+- Disables LuaSnip default keybindings to avoid conflicts
+
+**Why this configuration?**
+This setup makes Tab the primary completion key while keeping Enter for newlines, which many developers find more intuitive than LazyVim's defaults.
+
+<Note>
+Based on [LazyVim discussion #250](https://github.com/LazyVim/LazyVim/discussions/250)
+</Note>
+
+</Accordion>
+
+<Accordion title="Vim Be Good">
+
+A game to practice Vim motions and improve your editing speed.
+
+**File:** `nvim/lua/plugins/vimbegood.lua`
+
+```lua
+return {
+  {
+    "ThePrimeagen/vim-be-good",
+    cmd = "VimBeGood",
+    lazy = true,
+  },
+}
+```
+
+**Features:**
+- Lazy-loaded via the `:VimBeGood` command
+- Gamified Vim motion practice
+- Multiple game modes to improve different skills
+
+**Usage:**
+```vim
+:VimBeGood
+```
+
+Then select a game mode to practice:
+- `relative` - Practice relative line jumps
+- `ci{` - Practice change inner commands
+- `whackamole` - Speed and accuracy training
+
+</Accordion>
+
+<Accordion title="Mason Version Lock">
+
+Locks Mason LSP manager versions to ensure stability.
+
+**File:** `nvim/lua/plugins/mason-workaround.lua`
+
+```lua
+return {
+  { "mason-org/mason.nvim", version = "1.11.0" },
+  { "mason-org/mason-lspconfig.nvim", version = "1.32.0" },
+}
+```
+
+**Purpose:**
+- Pins Mason to specific versions to prevent breaking changes
+- Ensures LSP configuration remains stable
+- Prevents automatic updates that might introduce bugs
+
+**Versions:**
+- `mason.nvim`: 1.11.0
+- `mason-lspconfig.nvim`: 1.32.0
+
+<Note>
+This is a workaround for stability. You may want to periodically update these versions manually after testing.
+</Note>
+
+</Accordion>
+
+## Managing Plugins
+
+### Installing Plugins
+
+Plugins are automatically installed when you open Neovim. To manually trigger installation:
+
+```vim
+:Lazy sync
+```
+
+### Updating Plugins
+
+```vim
+:Lazy update
+```
+
+### Viewing Plugin Status
+
+```vim
+:Lazy
+```
+
+This opens the Lazy.nvim UI where you can see all installed plugins, their status, and perform actions like update, clean, or restore.
+
+## Adding New Plugins
+
+To add a new plugin:
+
+1. Create a new file in `nvim/lua/plugins/` (e.g., `my-plugin.lua`)
+2. Return a lazy.nvim plugin specification:
+
+```lua
+return {
+  "author/plugin-name",
+  opts = {
+    -- plugin options
+  },
+}
+```
+
+3. Restart Neovim or run `:Lazy sync`
+
+For more information on plugin configuration, see the [lazy.nvim documentation](https://github.com/folke/lazy.nvim).

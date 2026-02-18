@@ -1,0 +1,394 @@
+---
+title: Tmux Setup
+description: Complete guide to installing and configuring Tmux with plugins and Vim keybindings
+---
+
+This guide covers setting up Tmux with the Tmux Plugin Manager (TPM), installing themes, and using copy mode with Vim keybindings.
+
+## Configuration Overview
+
+The Tmux configuration is located at `tmux/tmux.conf` and includes:
+
+- Vim keybindings in copy mode
+- Custom prefix key (Ctrl+Space instead of Ctrl+b)
+- True color support
+- Mouse support
+- Catppuccin theme
+- TPM (Tmux Plugin Manager)
+
+## Installing TPM
+
+<Steps>
+
+<Step title="Install TPM">
+
+Clone the TPM repository to your home directory:
+
+```bash
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+```
+
+</Step>
+
+<Step title="Copy Configuration">
+
+Copy the tmux configuration file to your home directory:
+
+```bash
+cp tmux/tmux.conf ~/.tmux.conf
+```
+
+Or create a symlink:
+
+```bash
+ln -s $(pwd)/tmux/tmux.conf ~/.tmux.conf
+```
+
+</Step>
+
+<Step title="Start Tmux">
+
+Launch a new Tmux session:
+
+```bash
+tmux
+```
+
+Or if Tmux is already running, reload the configuration:
+
+```bash
+tmux source ~/.tmux.conf
+```
+
+</Step>
+
+<Step title="Install Plugins">
+
+Inside Tmux, press the prefix key followed by `I` (capital i) to install plugins:
+
+```
+Ctrl+Space + I
+```
+
+TPM will automatically install all plugins listed in your configuration:
+- `tmux-plugins/tpm` - TPM itself
+- `dreamsofcode-io/catppuccin-tmux` - Catppuccin theme
+
+<Note>
+Wait for the installation to complete. You'll see a message when it's done.
+</Note>
+
+</Step>
+
+</Steps>
+
+## Configuration Details
+
+Here's the complete Tmux configuration:
+
+```bash
+# Enable Vim keybindings in copy mode
+set-option -sa terminal-overrides ",xterm*:Tc:RGB:sitm=\E[3m:ritm=\E[23m"
+set -g default-terminal "tmux-256color"
+setw -g mode-keys vi
+set -ga terminal-overrides ',xterm-256color:Tc'
+set -g renumber-windows on
+set -g base-index 1
+
+# remap prefix from 'C-b' to 'C-Space'
+unbind C-b
+set -g prefix C-Space
+bind C-Space send-prefix
+
+set -as terminal-overrides ',xterm*:sitm=\E[3m'
+set-option -sg escape-time 10
+set-option -g focus-events on
+set -g mouse on
+
+# Enter copy mode with Prefix+[
+bind-key [ copy-mode
+
+# Vim-like navigation in copy mode
+bind-key -T copy-mode-vi 'v' send -X begin-selection
+bind-key -T copy-mode-vi 'y' send -X copy-selection
+bind-key -T copy-mode-vi 'V' send -X rectangle-toggle
+
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'dreamsofcode-io/catppuccin-tmux'
+
+run '~/.tmux/plugins/tpm/tpm'
+```
+
+### Key Configuration Highlights
+
+**Terminal & Colors:**
+- True color (24-bit) support enabled
+- 256-color terminal mode
+- Italic text support
+
+**Prefix Key:**
+- Changed from `Ctrl+b` to `Ctrl+Space` for easier reach
+
+**Window Management:**
+- Windows automatically renumber when one is closed
+- Window indexing starts at 1 (instead of 0)
+
+**Performance:**
+- Reduced escape time to 10ms for faster key response
+- Focus events enabled for better integration with Neovim
+
+**Mouse:**
+- Mouse support enabled for clicking, scrolling, and resizing
+
+## Using Copy Mode
+
+Copy mode allows you to navigate and copy text from your Tmux panes using Vim keybindings.
+
+### Entering Copy Mode
+
+Press `Prefix + [` to enter copy mode:
+
+```
+Ctrl+Space + [
+```
+
+### Navigation in Copy Mode
+
+Once in copy mode, use standard Vim navigation:
+
+| Key | Action |
+|-----|--------|
+| `h` | Move left |
+| `j` | Move down |
+| `k` | Move up |
+| `l` | Move right |
+| `w` | Jump forward one word |
+| `b` | Jump backward one word |
+| `0` | Jump to start of line |
+| `$` | Jump to end of line |
+| `gg` | Jump to top |
+| `G` | Jump to bottom |
+| `/` | Search forward |
+| `?` | Search backward |
+| `n` | Next search result |
+| `N` | Previous search result |
+
+### Selecting and Copying Text
+
+<Steps>
+
+<Step title="Position Cursor">
+
+Navigate to where you want to start selecting text.
+
+</Step>
+
+<Step title="Start Selection">
+
+Press `v` to enter visual mode (character selection):
+
+```
+v
+```
+
+Or press `V` for rectangle/block selection:
+
+```
+V
+```
+
+</Step>
+
+<Step title="Expand Selection">
+
+Use Vim navigation keys to expand your selection:
+
+- `h`, `j`, `k`, `l` for character movement
+- `w`, `e`, `b` for word movement
+- `$`, `0` for line start/end
+
+</Step>
+
+<Step title="Copy Selection">
+
+Press `y` to copy the selected text:
+
+```
+y
+```
+
+This copies to Tmux's clipboard and exits copy mode.
+
+</Step>
+
+<Step title="Paste">
+
+Press `Prefix + ]` to paste:
+
+```
+Ctrl+Space + ]
+```
+
+</Step>
+
+</Steps>
+
+### Quick Copy Workflow Example
+
+```bash
+# Enter copy mode
+Ctrl+Space + [
+
+# Navigate to text
+/error          # Search for "error"
+n               # Next occurrence
+
+# Select text
+v               # Start visual selection
+e               # Select to end of word
+
+# Copy
+y               # Yank (copy) and exit
+
+# Paste
+Ctrl+Space + ]  # Paste
+```
+
+## Managing Plugins
+
+### Installing Plugins
+
+After adding a plugin to your `~/.tmux.conf`:
+
+```bash
+set -g @plugin 'author/plugin-name'
+```
+
+Install it with:
+
+```
+Ctrl+Space + I
+```
+
+### Updating Plugins
+
+Update all plugins:
+
+```
+Ctrl+Space + U
+```
+
+### Removing Plugins
+
+1. Remove or comment out the plugin line from `~/.tmux.conf`
+2. Reload Tmux configuration:
+   ```
+   Ctrl+Space + r
+   ```
+3. Clean unused plugins:
+   ```
+   Ctrl+Space + Alt + u
+   ```
+
+## Essential Tmux Commands
+
+Here are some essential Tmux commands to get you started:
+
+### Session Management
+
+```bash
+tmux                    # Start new session
+tmux new -s mysession   # Start named session
+tmux ls                 # List sessions
+tmux attach -t mysession # Attach to session
+tmux kill-session -t mysession # Kill session
+```
+
+### Window Management (inside Tmux)
+
+```
+Ctrl+Space + c          # Create new window
+Ctrl+Space + n          # Next window
+Ctrl+Space + p          # Previous window
+Ctrl+Space + ,          # Rename window
+Ctrl+Space + &          # Kill window
+Ctrl+Space + 0-9        # Switch to window by number
+```
+
+### Pane Management
+
+```
+Ctrl+Space + %          # Split vertically
+Ctrl+Space + "          # Split horizontally
+Ctrl+Space + arrow      # Navigate panes
+Ctrl+Space + x          # Kill pane
+Ctrl+Space + z          # Toggle pane zoom
+Ctrl+Space + {          # Move pane left
+Ctrl+Space + }          # Move pane right
+```
+
+### Other Useful Commands
+
+```
+Ctrl+Space + ?          # List all keybindings
+Ctrl+Space + :          # Enter command mode
+Ctrl+Space + d          # Detach from session
+```
+
+## Theme Customization
+
+The configuration uses the Catppuccin theme. To customize or change themes:
+
+1. Browse available Tmux themes on GitHub
+2. Add the plugin to your configuration:
+   ```bash
+   set -g @plugin 'author/theme-name'
+   ```
+3. Install with `Ctrl+Space + I`
+
+<Note>
+The Catppuccin theme matches the colorscheme used in Neovim and Alacritty for a cohesive look.
+</Note>
+
+## Troubleshooting
+
+### Colors Don't Look Right
+
+Make sure your terminal emulator supports true color. Check with:
+
+```bash
+echo $TERM
+```
+
+It should show `tmux-256color` or `xterm-256color`.
+
+### Plugins Not Loading
+
+1. Verify TPM is installed: `ls ~/.tmux/plugins/tpm`
+2. Reload configuration: `Ctrl+Space + r`
+3. Reinstall plugins: `Ctrl+Space + I`
+
+### Prefix Key Not Working
+
+Make sure you're pressing `Ctrl+Space` together, then release before pressing the next key.
+
+### Copy Mode Not Working
+
+Verify Vim keybindings are enabled:
+
+```bash
+tmux show-options -g mode-keys
+```
+
+Should output: `mode-keys vi`
+
+## Integration with Neovim
+
+For seamless navigation between Tmux panes and Neovim windows, consider installing `christoomey/vim-tmux-navigator` in Neovim. This allows you to use `Ctrl+h/j/k/l` to navigate between Tmux panes and Neovim splits without thinking about boundaries.
+
+## Further Resources
+
+- [Tmux Manual](https://man.openbsd.org/tmux)
+- [TPM GitHub](https://github.com/tmux-plugins/tpm)
+- [Catppuccin Tmux Theme](https://github.com/dreamsofcode-io/catppuccin-tmux)
+- [Awesome Tmux Plugins](https://github.com/rothgar/awesome-tmux)

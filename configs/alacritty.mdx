@@ -1,0 +1,384 @@
+---
+title: Alacritty Configuration
+description: Fast, GPU-accelerated terminal emulator with transparency, custom fonts, and extensive theming
+---
+
+## Overview
+
+Alacritty is a modern, GPU-accelerated terminal emulator written in Rust, known for its exceptional performance and minimalist configuration approach. This configuration provides a visually appealing setup with transparency effects, custom fonts, and a modular theming system.
+
+## Configuration File
+
+The main configuration is located at `alacritty/alacritty.toml` using the TOML format (as of Alacritty v0.13+).
+
+<Note>
+  Older versions of Alacritty used YAML format (`.yml`). This configuration uses the newer TOML format which is now the default.
+</Note>
+
+## Complete Configuration
+
+```toml
+general.import = [
+    "~/.config/alacritty/themes/themes/coolnight.toml"
+]
+
+[ env ]
+TERM = "xterm-256color"
+
+[window]
+padding.x = 10
+padding.y = 10
+
+decorations = "Buttonless"
+opacity = 0.8
+blur = true
+startup_mode = "Maximized"
+
+[font]
+normal.family = "0xProto Nerd Font Mono"
+size = 16
+```
+
+## Configuration Breakdown
+
+<Tabs>
+  <Tab title="Theme Import">
+    ### Theme System
+
+    ```toml
+    general.import = [
+        "~/.config/alacritty/themes/themes/coolnight.toml"
+    ]
+    ```
+
+    **How it works:**
+    - Alacritty's import system allows modular configuration
+    - Themes are stored separately in `alacritty/themes/themes/` directory
+    - The active theme (`coolnight.toml`) is imported at runtime
+    - You can switch themes by changing the import path
+
+    ### Available Themes
+
+    The configuration includes an extensive theme collection with 100+ themes:
+
+    <Accordion title="Popular Themes">
+      - **Tokyo Night**: Modern dark theme with vibrant colors
+      - **Nord**: Arctic, north-bluish color palette
+      - **Catppuccin**: Soothing pastel theme with multiple variants
+      - **Gruvbox**: Retro groove color scheme
+      - **One Dark**: Atom's iconic theme
+      - **Solarized**: Precision colors for machines and people
+      - **Rose Pine**: All natural pine, faux fur and a bit of soho vibes
+      - **Dracula**: Dark theme with vibrant colors
+      - **Monokai**: Classic Sublime Text theme
+    </Accordion>
+
+    ### Switching Themes
+
+    Simply change the import path to any theme in the themes directory:
+
+    ```toml
+    general.import = [
+        "~/.config/alacritty/themes/themes/tokyo_night.toml"
+    ]
+    ```
+
+  </Tab>
+
+  <Tab title="Window Settings">
+    ### Window Configuration
+
+    ```toml
+    [window]
+    padding.x = 10
+    padding.y = 10
+
+    decorations = "Buttonless"
+    opacity = 0.8
+    blur = true
+    startup_mode = "Maximized"
+    ```
+
+    ### Padding
+
+    ```toml
+    padding.x = 10
+    padding.y = 10
+    ```
+
+    - Adds 10 pixels of internal padding on all sides
+    - Creates breathing room between terminal content and window edges
+    - Values can be adjusted for personal preference
+
+    ### Decorations
+
+    ```toml
+    decorations = "Buttonless"
+    ```
+
+    **Options:**
+    - `"Full"` - Standard OS window decorations with title bar and buttons
+    - `"None"` - No decorations at all (borderless)
+    - `"Buttonless"` - Title bar without minimize/maximize/close buttons
+    - `"Transparent"` - Transparent title bar (macOS only)
+
+    The "Buttonless" option provides a clean, minimal look while maintaining the title bar for dragging.
+
+    ### Opacity & Blur
+
+    ```toml
+    opacity = 0.8
+    blur = true
+    ```
+
+    - **Opacity**: `0.8` means 80% opaque (20% transparent)
+    - **Blur**: Applies background blur effect to transparent areas
+    - Creates a modern, aesthetic appearance while maintaining readability
+    - Requires compositor support (works natively on macOS, needs compositor on Linux)
+
+    <Note>
+      On Linux, you may need a compositor like picom or compton for blur effects to work.
+    </Note>
+
+    ### Startup Mode
+
+    ```toml
+    startup_mode = "Maximized"
+    ```
+
+    **Options:**
+    - `"Windowed"` - Default window size
+    - `"Maximized"` - Maximized window (current setting)
+    - `"Fullscreen"` - Fullscreen mode
+    - `"SimpleFullscreen"` - Fullscreen without window chrome (macOS)
+
+  </Tab>
+
+  <Tab title="Font Settings">
+    ### Font Configuration
+
+    ```toml
+    [font]
+    normal.family = "0xProto Nerd Font Mono"
+    size = 16
+    ```
+
+    ### Font Family: 0xProto Nerd Font
+
+    **0xProto Nerd Font Mono** is a programming-focused font that includes:
+    - Clear distinction between similar characters (0/O, 1/l/I)
+    - Ligatures for common programming operators
+    - Complete Nerd Font icon set (2000+ glyphs)
+    - Optimized for long coding sessions
+
+    <Accordion title="Why Nerd Fonts?">
+      Nerd Fonts are patched fonts that include additional glyphs from popular icon fonts:
+      - **Font Awesome**: Web icons
+      - **Devicons**: Programming language icons
+      - **Octicons**: GitHub icons
+      - **Powerline**: Status line glyphs
+      - **Material Design Icons**: Google's icon set
+
+      These icons are essential for modern terminal tools like:
+      - Oh My Zsh themes
+      - Neovim status lines (lualine, etc.)
+      - File managers (ranger, lf)
+      - Git prompts
+    </Accordion>
+
+    ### Font Size
+
+    ```toml
+    size = 16
+    ```
+
+    - 16pt provides good readability on modern high-DPI displays
+    - Adjust based on your monitor size and resolution
+    - Common sizes: 12-14 (1080p), 14-16 (1440p), 16-18 (4K)
+
+    ### Additional Font Styles
+
+    While not configured, you can add:
+
+    ```toml
+    [font]
+    normal.family = "0xProto Nerd Font Mono"
+    bold.family = "0xProto Nerd Font Mono"
+    italic.family = "0xProto Nerd Font Mono"
+    bold_italic.family = "0xProto Nerd Font Mono"
+    size = 16
+    ```
+
+  </Tab>
+
+  <Tab title="Environment">
+    ### Environment Variables
+
+    ```toml
+    [ env ]
+    TERM = "xterm-256color"
+    ```
+
+    **What this does:**
+    - Sets the `$TERM` environment variable for programs running in Alacritty
+    - `xterm-256color` enables 256-color support
+    - Ensures compatibility with legacy applications expecting xterm
+
+    ### Why xterm-256color?
+
+    While Alacritty supports true color (24-bit), some applications check the `$TERM` variable:
+    - Most modern apps detect capabilities automatically
+    - `xterm-256color` is widely recognized and compatible
+    - Alternative: `alacritty` (requires terminfo database installation)
+
+    <Note>
+      Tmux and Neovim will detect true color support regardless of the `$TERM` setting, thanks to terminfo capabilities.
+    </Note>
+
+  </Tab>
+</Tabs>
+
+## Theme Structure
+
+Theme files in `alacritty/themes/themes/` follow this structure:
+
+```toml
+# Example: tokyo_night.toml
+[colors.primary]
+background = '#1a1b26'
+foreground = '#a9b1d6'
+
+[colors.normal]
+black   = '#32344a'
+red     = '#f7768e'
+green   = '#9ece6a'
+yellow  = '#e0af68'
+blue    = '#7aa2f7'
+magenta = '#ad8ee6'
+cyan    = '#449dab'
+white   = '#787c99'
+
+[colors.bright]
+black   = '#444b6a'
+red     = '#ff7a93'
+green   = '#b9f27c'
+yellow  = '#ff9e64'
+blue    = '#7da6ff'
+magenta = '#bb9af7'
+cyan    = '#0db9d7'
+white   = '#acb0d0'
+```
+
+### Creating Custom Themes
+
+To create your own theme:
+
+1. Create a new `.toml` file in `alacritty/themes/themes/`
+2. Define the color palette using the structure above
+3. Import it in the main `alacritty.toml`
+
+## Installing Fonts
+
+### macOS
+
+```bash
+brew install font-0xproto-nerd-font
+```
+
+### Linux
+
+```bash
+# Download from Nerd Fonts releases
+wget https://github.com/ryanoasis/nerd-fonts/releases/download/v3.1.1/0xProto.zip
+unzip 0xProto.zip -d ~/.local/share/fonts
+fc-cache -fv
+```
+
+### Windows
+
+1. Download from [Nerd Fonts releases](https://github.com/ryanoasis/nerd-fonts/releases)
+2. Extract and install fonts by double-clicking
+3. Restart Alacritty
+
+## Performance Tips
+
+<Note>
+  Alacritty is already highly optimized, but these settings can help further:
+</Note>
+
+1. **Disable blur on low-end systems**: Set `blur = false` to reduce GPU load
+2. **Reduce opacity**: Higher opacity values (closer to 1.0) render faster
+3. **Use hardware-accelerated drivers**: Ensure your GPU drivers are up to date
+4. **Monitor GPU usage**: Alacritty should use minimal GPU resources
+
+## Common Customizations
+
+### Cursor Configuration
+
+```toml
+[cursor]
+style = { shape = "Block", blinking = "On" }
+blink_interval = 750
+```
+
+### Scrollback Buffer
+
+```toml
+[scrolling]
+history = 10000
+multiplier = 3
+```
+
+### Key Bindings
+
+```toml
+[[keyboard.bindings]]
+key = "N"
+mods = "Command"
+action = "CreateNewWindow"
+
+[[keyboard.bindings]]
+key = "K"
+mods = "Command"
+action = "ClearHistory"
+```
+
+## Troubleshooting
+
+<Accordion title="Colors look wrong in tmux">
+  Make sure tmux is configured with true color support:
+
+  ```bash
+  set -g default-terminal "tmux-256color"
+  set -ga terminal-overrides ',xterm-256color:Tc'
+  ```
+</Accordion>
+
+<Accordion title="Font icons not showing">
+  Ensure you're using a Nerd Font variant and the font is properly installed:
+
+  ```bash
+  fc-list | grep -i "0xProto"
+  ```
+</Accordion>
+
+<Accordion title="Transparency not working (Linux)">
+  Install a compositor:
+
+  ```bash
+  # Arch/Manjaro
+  sudo pacman -S picom
+
+  # Ubuntu/Debian
+  sudo apt install picom
+  ```
+
+  Then enable it in your window manager configuration.
+</Accordion>
+
+## Resources
+
+- [Alacritty Official Documentation](https://alacritty.org/)
+- [Alacritty GitHub Repository](https://github.com/alacritty/alacritty)
+- [Nerd Fonts](https://www.nerdfonts.com/)
+- [Alacritty Themes Repository](https://github.com/alacritty/alacritty-theme)

@@ -5,8 +5,9 @@
   "colors": {
     "primary": "#7aa2f7",
     "light": "#89b4fa",
-    "dark": "#565f89"
+    "dark": "#5e81ac"
   },
+  "favicon": "/favicon.svg",
   "navbar": {
     "primary": {
       "type": "github",
@@ -21,40 +22,35 @@
   "navigation": {
     "groups": [
       {
-        "group": "Overview",
-        "pages": ["introduction", "installation"]
-      },
-      {
-        "group": "Neovim Configuration",
+        "group": "Getting Started",
         "pages": [
-          "nvim/overview",
-          "nvim/plugins",
-          "nvim/keymaps",
-          "nvim/colorschemes"
+          "introduction",
+          "installation"
         ]
       },
       {
-        "group": "Terminal Configuration",
+        "group": "Configurations",
         "pages": [
-          "alacritty/overview",
-          "alacritty/themes",
-          "tmux/overview",
-          "tmux/keybindings"
-        ]
-      },
-      {
-        "group": "Window Management",
-        "pages": [
-          "aerospace/overview",
-          "aerospace/keybindings",
-          "aerospace/workspaces"
+          "configs/neovim",
+          "configs/tmux",
+          "configs/alacritty",
+          "configs/aerospace"
         ]
       },
       {
         "group": "Guides",
         "pages": [
-          "guides/getting-started",
-          "guides/customization"
+          "guides/neovim-plugins",
+          "guides/neovim-keymaps",
+          "guides/tmux-setup",
+          "guides/themes"
+        ]
+      },
+      {
+        "group": "Reference",
+        "pages": [
+          "reference/directory-structure",
+          "reference/keybindings"
         ]
       }
     ]

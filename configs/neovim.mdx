@@ -1,0 +1,283 @@
+---
+title: Neovim Configuration
+description: LazyVim-based Neovim setup with custom plugins and configurations
+---
+
+## Overview
+
+This Neovim configuration is built on top of [LazyVim](https://www.lazyvim.org/), a Neovim configuration framework that provides a solid foundation with sensible defaults, modern plugin management via lazy.nvim, and extensive customization options.
+
+## Configuration Structure
+
+The configuration follows LazyVim's recommended directory structure:
+
+```
+nvim/
+├── init.lua                 # Entry point
+├── lua/
+│   ├── config/             # Core configuration
+│   │   ├── lazy.lua        # Plugin manager setup
+│   │   ├── keymaps.lua     # Custom keybindings
+│   │   ├── options.lua     # Vim options
+│   │   └── autocmds.lua    # Autocommands
+│   └── plugins/            # Plugin specifications
+│       ├── colorscheme.lua
+│       ├── obsidian.lua
+│       ├── snacks-config.lua
+│       └── ...
+├── lazyvim.json            # LazyVim extras configuration
+└── lazy-lock.json          # Plugin version lock file
+```
+
+## Entry Point: init.lua
+
+The `init.lua` file serves as the single entry point that bootstraps the entire configuration:
+
+```lua
+-- bootstrap lazy.nvim, LazyVim and your plugins
+require("config.lazy")
+```
+
+This minimal entry point delegates all setup to the lazy configuration module.
+
+## Core Configuration Files
+
+<Tabs>
+  <Tab title="lazy.lua">
+    The `lua/config/lazy.lua` file handles the installation and setup of the lazy.nvim plugin manager:
+
+    ```lua
+    local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+    if not (vim.uv or vim.loop).fs_stat(lazypath) then
+      local lazyrepo = "https://github.com/folke/lazy.nvim.git"
+      local out = vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
+      if vim.v.shell_error ~= 0 then
+        vim.api.nvim_echo({
+          { "Failed to clone lazy.nvim:\n", "ErrorMsg" },
+          { out, "WarningMsg" },
+          { "\nPress any key to exit..." },
+        }, true, {})
+        vim.fn.getchar()
+        os.exit(1)
+      end
+    end
+    vim.opt.rtp:prepend(lazypath)
+
+    require("lazy").setup({
+      spec = {
+        -- add LazyVim and import its plugins
+        { "LazyVim/LazyVim", import = "lazyvim.plugins" },
+        -- import/override with your plugins
+        { import = "plugins" },
+      },
+      defaults = {
+        lazy = false,
+        version = false, -- always use the latest git commit
+      },
+      install = { colorscheme = { "tokyonight", "habamax" } },
+      checker = {
+        enabled = true, -- check for plugin updates periodically
+        notify = false, -- notify on update
+      },
+      performance = {
+        rtp = {
+          -- disable some rtp plugins
+          disabled_plugins = {
+            "gzip",
+            "tarPlugin",
+            "tohtml",
+            "tutor",
+            "zipPlugin",
+          },
+        },
+      },
+    })
+    ```
+
+    ### Key Features:
+    - **Auto-installation**: Automatically clones lazy.nvim if not present
+    - **LazyVim integration**: Imports all LazyVim plugins as the base
+    - **Plugin directory**: Auto-imports all plugins from `lua/plugins/`
+    - **Update checker**: Periodically checks for plugin updates without notifications
+    - **Performance optimizations**: Disables unnecessary builtin plugins
+
+  </Tab>
+
+  <Tab title="options.lua">
+    The `lua/config/options.lua` file contains Vim options that override LazyVim defaults:
+
+    ```lua
+    -- Options are automatically loaded before lazy.nvim startup
+    -- Default options that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
+    -- Add any additional options here
+    vim.g.root_spec = { "cwd" }
+    ```
+
+    ### Configuration Details:
+    - `vim.g.root_spec = { "cwd" }`: Sets the project root detection to always use the current working directory
+    - This overrides LazyVim's default behavior of detecting roots via `.git`, `.svn`, etc.
+    - Provides more predictable behavior when working with monorepos or nested projects
+
+  </Tab>
+
+  <Tab title="autocmds.lua">
+    The `lua/config/autocmds.lua` file defines custom autocommands:
+
+    ```lua
+    -- Autocmds are automatically loaded on the VeryLazy event
+    -- Default autocmds that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/autocmds.lua
+    --
+    -- Add any additional autocmds here
+    -- with `vim.api.nvim_create_autocmd`
+    --
+    -- Or remove existing autocmds by their group name (which is prefixed with `lazyvim_` for the defaults)
+    -- e.g. vim.api.nvim_del_augroup_by_name("lazyvim_wrap_spell")
+
+    vim.api.nvim_set_hl(0, "Visual", { bg = "#ffff00", fg = "#000000" })
+    ```
+
+    ### Custom Highlight:
+    - Sets visual selection to use bright yellow background (`#ffff00`) with black text (`#000000`)
+    - Provides high contrast for visual mode selections
+    - This highlight is set immediately on startup
+
+  </Tab>
+
+  <Tab title="keymaps.lua">
+    The `lua/config/keymaps.lua` file is currently minimal, relying on LazyVim's defaults:
+
+    ```lua
+    -- Keymaps are automatically loaded on the VeryLazy event
+    -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
+    -- Add any additional keymaps here
+    ```
+
+    This file is ready for custom keybindings to be added as needed. LazyVim provides extensive default keymaps that cover most common operations.
+
+  </Tab>
+</Tabs>
+
+## Plugin Configuration
+
+### Colorschemes
+
+Multiple colorschemes are installed with OneDark set as the default (`lua/plugins/colorscheme.lua`):
+
+```lua
+return {
+  { "rebelot/kanagawa.nvim" },
+  { "NLKNguyen/papercolor-theme" },
+  { "ellisonleao/gruvbox.nvim" },
+  { "rose-pine/neovim" },
+  { "tiagovla/tokyodark.nvim" },
+  { "sainnhe/everforest" },
+  {
+    "navarasu/onedark.nvim",
+    opts = {
+      highlights = {
+        Visual = { bg = "#ffff00" },
+      },
+    },
+  },
+  {
+    "LazyVim/LazyVim",
+    opts = {
+      colorscheme = "onedark",
+    },
+  },
+}
+```
+
+The OneDark theme is configured with a custom visual selection highlight matching the one in `autocmds.lua`.
+
+### Obsidian Integration
+
+Integration with Obsidian note-taking app via `obsidian.nvim` plugin (`lua/plugins/obsidian.lua`):
+
+```lua
+return {
+  "epwalsh/obsidian.nvim",
+  version = "*",
+  lazy = true,
+  ft = "markdown",
+  dependencies = {
+    "nvim-lua/plenary.nvim",
+    "hrsh7th/nvim-cmp",
+  },
+  opts = {
+    workspaces = {
+      {
+        name = "personal",
+        path = "/Users/leylandyang/Library/Mobile Documents/iCloud~md~obsidian/Documents/Sharedvault",
+      },
+    },
+    completion = {
+      nvim_cmp = true,
+      min_chars = 2,
+    },
+    new_notes_location = "notes_subdir",
+    daily_notes = {
+      folder = "/daily notes",
+      date_format = "%m-%d-%Y",
+      alias_format = "%B %-d, %Y",
+      default_tags = { "daily-notes" },
+      template = nil,
+    },
+  },
+}
+```
+
+<Note>
+  The plugin is lazy-loaded and only activates when opening Markdown files (`ft = "markdown"`), improving startup time.
+</Note>
+
+## Plugin Management
+
+### Installing Plugins
+
+Plugins are defined in `lua/plugins/` directory. Each file should return a Lua table with plugin specifications:
+
+```lua
+return {
+  "author/plugin-name",
+  opts = {
+    -- plugin options
+  },
+}
+```
+
+### Plugin Commands
+
+- `:Lazy` - Open the lazy.nvim plugin manager UI
+- `:Lazy sync` - Install/update/clean plugins
+- `:Lazy update` - Update plugins
+- `:Lazy clean` - Remove unused plugins
+- `:Lazy check` - Check for updates
+
+## LazyVim Extras
+
+LazyVim provides "extras" - optional plugin configurations that can be enabled. These are configured in `lazyvim.json`.
+
+<Accordion title="View available extras">
+  Visit [LazyVim Extras](https://www.lazyvim.org/extras) to see all available configurations for:
+  - Language support (TypeScript, Python, Go, Rust, etc.)
+  - Additional editors features (GitHub Copilot, Copilot Chat, etc.)
+  - UI enhancements (dashboard, bufferline, etc.)
+  - And more
+</Accordion>
+
+## File Locations
+
+- **Configuration root**: `~/.config/nvim/` (Linux/macOS) or `~/AppData/Local/nvim/` (Windows)
+- **Data directory**: `~/.local/share/nvim/` - Contains lazy.nvim and installed plugins
+- **State directory**: `~/.local/state/nvim/` - Contains swap files, undo history, etc.
+
+## Key Features
+
+- **Modern plugin management**: lazy.nvim with lazy loading for fast startup
+- **LSP support**: Built-in Language Server Protocol support via LazyVim
+- **Treesitter**: Advanced syntax highlighting and code understanding
+- **Telescope**: Fuzzy finder for files, text, and more
+- **Auto-completion**: nvim-cmp with multiple sources
+- **Git integration**: Built-in git signs and commands
+- **Multiple colorschemes**: Easy theme switching with various options

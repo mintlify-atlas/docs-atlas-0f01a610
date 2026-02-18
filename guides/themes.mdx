@@ -1,0 +1,519 @@
+---
+title: Themes & Colorschemes
+description: Complete guide to themes across Alacritty, Neovim, and Tmux
+---
+
+This configuration includes comprehensive theming for a cohesive visual experience across your terminal, editor, and multiplexer.
+
+## Alacritty Themes
+
+Alacritty comes with an extensive collection of pre-configured themes located in `alacritty/themes/themes/`.
+
+### Current Theme
+
+The configuration currently uses the **Coolnight** theme:
+
+```toml
+general.import = [
+    "~/.config/alacritty/themes/themes/coolnight.toml"
+]
+```
+
+### Available Themes
+
+The themes directory includes over 200 colorschemes. Here are some popular ones:
+
+<Tabs>
+  <Tab title="Dark Themes">
+    
+**Popular Dark Themes:**
+
+- `tokyo_night.toml` - A clean, dark theme inspired by Tokyo night cityscape
+- `tokyo_night_storm.toml` - Storm variant with deeper blues
+- `tokyo_night_enhanced.toml` - Enhanced contrast version
+- `gruvbox_dark.toml` - Retro groove color scheme
+- `gruvbox_material_medium_dark.toml` - Material design Gruvbox
+- `nord.toml` - Arctic, north-bluish color palette
+- `one_dark.toml` - Atom's iconic One Dark theme
+- `catppuccin_mocha.toml` - Soothing pastel theme (mocha variant)
+- `catppuccin_macchiato.toml` - Catppuccin macchiato variant
+- `catppuccin_frappe.toml` - Catppuccin frappé variant
+- `dracula.toml` - Dark theme with vibrant colors
+- `dracula_plus.toml` - Enhanced Dracula theme
+- `kanagawa_wave.toml` - Inspired by famous painting
+- `kanagawa_dragon.toml` - Dragon variant
+- `rose_pine.toml` - Natural pine with soho vibes
+- `rose_pine_moon.toml` - Moon variant
+- `monokai.toml` - Classic Monokai theme
+- `monokai_pro.toml` - Professional Monokai variant
+- `nightfox.toml` - Highly customizable dark theme
+- `palenight.toml` - Material palenight variant
+- `oceanic_next.toml` - Ocean-inspired dark theme
+
+  </Tab>
+  <Tab title="Light Themes">
+    
+**Popular Light Themes:**
+
+- `catppuccin_latte.toml` - Light variant of Catppuccin
+- `github_light.toml` - GitHub's light theme
+- `github_light_default.toml` - Default GitHub light
+- `github_light_high_contrast.toml` - High contrast variant
+- `gruvbox_light.toml` - Light Gruvbox variant
+- `gruvbox_material_medium_light.toml` - Material light Gruvbox
+- `one_light.toml` - Atom's One Light theme
+- `papercolor_light.toml` - Clean light theme
+- `rose_pine_dawn.toml` - Light Rose Pine variant
+- `solarized_light.toml` - Classic Solarized light
+- `pencil_light.toml` - Inspired by Pencil theme
+- `ayu_light.toml` - Light Ayu variant
+
+  </Tab>
+  <Tab title="Special Effects">
+    
+**Themes with Special Aesthetics:**
+
+- `cyberpunk_neon.toml` - Neon cyberpunk aesthetic
+- `synthwave_84.toml` - Retro synthwave colors
+- `blood_moon.toml` - Deep red moon theme
+- `everforest.toml` - Comfortable green forest
+- `doom_one.toml` - Doom Emacs inspired
+- `falcon.toml` - Warm and elegant
+- `inferno.toml` - Fiery color palette
+- `midnight_haze.toml` - Misty midnight colors
+- `moonfly.toml` - Dark blue moonlit theme
+- `nightfly.toml` - Charcoal dark with blue tones
+- `vesper.toml` - Low-contrast dark theme
+
+  </Tab>
+</Tabs>
+
+### Switching Alacritty Themes
+
+<Steps>
+
+<Step title="Browse Available Themes">
+
+List all available themes:
+
+```bash
+ls alacritty/themes/themes/
+```
+
+Or view them in your file explorer.
+
+</Step>
+
+<Step title="Choose Your Theme">
+
+Pick a theme file from the list, for example:
+- `tokyo_night.toml`
+- `catppuccin_mocha.toml`
+- `gruvbox_dark.toml`
+
+</Step>
+
+<Step title="Update Configuration">
+
+Edit `alacritty/alacritty.toml` and change the import line:
+
+```toml
+general.import = [
+    "~/.config/alacritty/themes/themes/tokyo_night.toml"
+]
+```
+
+Replace `tokyo_night.toml` with your chosen theme.
+
+</Step>
+
+<Step title="Reload Alacritty">
+
+Alacritty automatically reloads the configuration. If it doesn't, close and reopen Alacritty, or:
+
+- macOS: `Cmd + ,` to reload config
+- Linux: Configuration reloads automatically
+
+</Step>
+
+</Steps>
+
+<Note>
+You can preview themes by temporarily changing the import line and immediately seeing the result.
+</Note>
+
+### Theme Showcase
+
+Here are visual descriptions of some popular themes:
+
+<CardGroup cols={2}>
+
+<Card title="Tokyo Night" icon="moon">
+A clean, dark theme with blue and purple tones. Perfect for long coding sessions with excellent contrast.
+</Card>
+
+<Card title="Catppuccin" icon="mug-hot">
+Soothing pastel theme available in multiple variants (Mocha, Macchiato, Frappé, Latte). Easy on the eyes.
+</Card>
+
+<Card title="Gruvbox" icon="palette">
+Retro groove color scheme with warm, earthy tones. Available in light and dark variants with multiple contrast levels.
+</Card>
+
+<Card title="Nord" icon="snowflake">
+Arctic, north-bluish color palette. Cool and professional appearance with excellent readability.
+</Card>
+
+<Card title="One Dark" icon="atom">
+Atom editor's iconic dark theme. Balanced colors with good syntax highlighting support.
+</Card>
+
+<Card title="Rose Pine" icon="leaf">
+All natural pine theme with soho vibes. Soft, muted colors that reduce eye strain.
+</Card>
+
+</CardGroup>
+
+## Neovim Colorschemes
+
+The Neovim configuration includes multiple colorschemes with OneDark set as default.
+
+### Installed Colorschemes
+
+**File:** `nvim/lua/plugins/colorscheme.lua`
+
+```lua
+return {
+  { "rebelot/kanagawa.nvim" },
+  { "NLKNguyen/papercolor-theme" },
+  { "ellisonleao/gruvbox.nvim" },
+  { "rose-pine/neovim" },
+  { "tiagovla/tokyodark.nvim" },
+  { "sainnhe/everforest" },
+  {
+    "navarasu/onedark.nvim",
+    opts = {
+      highlights = {
+        Visual = { bg = "#ffff00" },
+      },
+    },
+  },
+  {
+    "LazyVim/LazyVim",
+    opts = {
+      colorscheme = "onedark",
+    },
+  },
+}
+```
+
+### Available Neovim Colorschemes
+
+| Colorscheme | Command | Description |
+|-------------|---------|-------------|
+| **OneDark** (default) | `:colorscheme onedark` | Atom's dark theme with yellow visual selection |
+| **Kanagawa** | `:colorscheme kanagawa` | Inspired by the famous painting |
+| **PaperColor** | `:colorscheme papercolor` | Clean light/dark theme |
+| **Gruvbox** | `:colorscheme gruvbox` | Retro groove color scheme |
+| **Rose Pine** | `:colorscheme rose-pine` | Natural pine with soft colors |
+| **TokyoDark** | `:colorscheme tokyodark` | Clean dark theme |
+| **Everforest** | `:colorscheme everforest` | Green forest theme |
+
+### Switching Neovim Colorschemes
+
+#### Temporary Change (Current Session)
+
+Inside Neovim, use the colorscheme command:
+
+```vim
+:colorscheme kanagawa
+```
+
+#### Permanent Change
+
+Edit `nvim/lua/plugins/colorscheme.lua` and change the default:
+
+```lua
+{
+  "LazyVim/LazyVim",
+  opts = {
+    colorscheme = "kanagawa",  -- Change this
+  },
+}
+```
+
+Restart Neovim or run:
+
+```vim
+:Lazy reload colorscheme
+```
+
+### Colorscheme Customization
+
+The OneDark colorscheme has a custom visual selection highlight:
+
+```lua
+{
+  "navarasu/onedark.nvim",
+  opts = {
+    highlights = {
+      Visual = { bg = "#ffff00" },  -- Bright yellow background
+    },
+  },
+}
+```
+
+You can add similar customizations to other colorschemes:
+
+```lua
+{
+  "rebelot/kanagawa.nvim",
+  opts = {
+    overrides = function(colors)
+      return {
+        -- Custom overrides here
+        Visual = { bg = colors.palette.waveBlue2 },
+      }
+    end,
+  },
+}
+```
+
+### Adding New Neovim Colorschemes
+
+To add a new colorscheme:
+
+1. Add the plugin to `colorscheme.lua`:
+
+```lua
+return {
+  -- Existing colorschemes...
+  { "folke/tokyonight.nvim" },  -- New colorscheme
+}
+```
+
+2. Restart Neovim or run `:Lazy sync`
+
+3. Switch to it:
+
+```vim
+:colorscheme tokyonight
+```
+
+## Tmux Theme
+
+Tmux uses the Catppuccin theme for a cohesive experience.
+
+### Current Configuration
+
+**File:** `tmux/tmux.conf`
+
+```bash
+set -g @plugin 'dreamsofcode-io/catppuccin-tmux'
+```
+
+### Installing the Theme
+
+The Catppuccin theme is installed via TPM (Tmux Plugin Manager):
+
+```
+Ctrl+Space + I
+```
+
+### Switching Tmux Themes
+
+To use a different Tmux theme:
+
+<Steps>
+
+<Step title="Find a Theme">
+
+Browse Tmux themes:
+- [Tmux Plugins](https://github.com/tmux-plugins)
+- [Awesome Tmux](https://github.com/rothgar/awesome-tmux)
+
+Popular themes:
+- `catppuccin/tmux` - Official Catppuccin
+- `dracula/tmux` - Dracula theme
+- `egel/tmux-gruvbox` - Gruvbox theme
+- `jimeh/tmux-themepack` - Collection of themes
+- `rose-pine/tmux` - Rose Pine theme
+
+</Step>
+
+<Step title="Update Configuration">
+
+Edit `~/.tmux.conf`:
+
+```bash
+# Remove or comment out current theme
+# set -g @plugin 'dreamsofcode-io/catppuccin-tmux'
+
+# Add new theme
+set -g @plugin 'dracula/tmux'
+```
+
+</Step>
+
+<Step title="Install Theme">
+
+Inside Tmux, install the new theme:
+
+```
+Ctrl+Space + I
+```
+
+</Step>
+
+<Step title="Reload Configuration">
+
+Reload Tmux configuration:
+
+```bash
+tmux source ~/.tmux.conf
+```
+
+Or use the keybinding:
+
+```
+Ctrl+Space + r
+```
+
+</Step>
+
+</Steps>
+
+### Catppuccin Variants
+
+Catppuccin has four variants you can configure:
+
+```bash
+set -g @catppuccin_flavour 'mocha'     # Options: latte, frappe, macchiato, mocha
+```
+
+Add this line before the TPM initialization in your `~/.tmux.conf`.
+
+## Creating a Cohesive Theme
+
+For a unified look across all tools, match your themes:
+
+### Dark Theme Setup
+
+<Tabs>
+  <Tab title="Catppuccin">
+    
+**Full Catppuccin Setup:**
+
+1. **Alacritty:** `catppuccin_mocha.toml`
+2. **Neovim:** Add Catppuccin plugin:
+   ```lua
+   { "catppuccin/nvim", name = "catppuccin" }
+   ```
+   Then set colorscheme to `catppuccin`
+3. **Tmux:** Already configured with Catppuccin
+
+  </Tab>
+  <Tab title="Tokyo Night">
+    
+**Full Tokyo Night Setup:**
+
+1. **Alacritty:** `tokyo_night.toml`
+2. **Neovim:** Add Tokyo Night plugin:
+   ```lua
+   { "folke/tokyonight.nvim" }
+   ```
+   Set colorscheme to `tokyonight`
+3. **Tmux:** Install Tokyo Night theme:
+   ```bash
+   set -g @plugin 'janoamaral/tokyo-night-tmux'
+   ```
+
+  </Tab>
+  <Tab title="Gruvbox">
+    
+**Full Gruvbox Setup:**
+
+1. **Alacritty:** `gruvbox_dark.toml`
+2. **Neovim:** Already installed, just switch:
+   ```vim
+   :colorscheme gruvbox
+   ```
+3. **Tmux:** Install Gruvbox theme:
+   ```bash
+   set -g @plugin 'egel/tmux-gruvbox'
+   ```
+
+  </Tab>
+</Tabs>
+
+### Light Theme Setup
+
+For light themes:
+
+1. **Alacritty:** `catppuccin_latte.toml` or `github_light.toml`
+2. **Neovim:** `:colorscheme papercolor` or `:set background=light`
+3. **Tmux:** Use light variant of your chosen theme
+
+## Theme Recommendations
+
+### For Long Coding Sessions
+- **Dark:** Tokyo Night, Catppuccin Mocha, Nord
+- **Low contrast, easier on eyes**
+
+### For High Contrast
+- **Dark:** One Dark, Dracula, Monokai
+- **Light:** GitHub Light High Contrast
+
+### For Unique Aesthetics
+- **Retro:** Gruvbox, Synthwave 84
+- **Nature:** Everforest, Rose Pine
+- **Artistic:** Kanagawa, Blood Moon
+
+### For Minimalism
+- **Dark:** Tokyo Dark, Moonfly
+- **Light:** Paper Color, Pencil Light
+
+## Troubleshooting
+
+### Colors Look Wrong
+
+**Issue:** Colors don't match the theme preview
+
+**Solution:**
+1. Ensure your terminal supports true color (24-bit):
+   ```bash
+   echo $TERM
+   ```
+   Should show `xterm-256color` or similar
+
+2. Check Alacritty configuration has:
+   ```toml
+   [env]
+   TERM = "xterm-256color"
+   ```
+
+### Neovim Theme Not Loading
+
+**Issue:** Colorscheme command fails
+
+**Solution:**
+1. Run `:Lazy sync` to ensure plugins are installed
+2. Check for errors: `:Lazy log`
+3. Verify plugin is loaded: `:Lazy`
+
+### Tmux Theme Not Appearing
+
+**Issue:** Theme doesn't change after installation
+
+**Solution:**
+1. Kill all Tmux sessions: `tmux kill-server`
+2. Start new session: `tmux`
+3. Verify plugin is installed: `ls ~/.tmux/plugins/`
+
+## Resources
+
+- [Alacritty Themes Repository](https://github.com/alacritty/alacritty-theme)
+- [Awesome Neovim Colorschemes](https://github.com/rockerBOO/awesome-neovim#colorscheme)
+- [Tmux Themes Collection](https://github.com/rothgar/awesome-tmux)
+- [Catppuccin Organization](https://github.com/catppuccin)
+- [Rose Pine Theme](https://rosepinetheme.com/)

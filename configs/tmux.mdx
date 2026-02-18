@@ -1,0 +1,270 @@
+---
+title: Tmux Configuration
+description: Customized tmux setup with Vim keybindings, modern theme, and productivity enhancements
+---
+
+## Overview
+
+This tmux configuration provides a modern, Vim-friendly terminal multiplexer setup with custom keybindings, mouse support, and the Catppuccin theme. The configuration emphasizes keyboard-driven workflows with intuitive navigation patterns.
+
+## Configuration File
+
+The main configuration is located at `tmux/tmux.conf` and should be symlinked to `~/.tmux.conf`.
+
+## Core Settings
+
+<Tabs>
+  <Tab title="Terminal & Colors">
+    ### Terminal Configuration
+
+    ```bash
+    set-option -sa terminal-overrides ",xterm*:Tc:RGB:sitm=\E[3m:ritm=\E[23m"
+    set -g default-terminal "tmux-256color"
+    set -ga terminal-overrides ',xterm-256color:Tc'
+    set -as terminal-overrides ',xterm*:sitm=\E[3m'
+    ```
+
+    **What this does:**
+    - Enables true color (24-bit) support for terminals
+    - Sets default terminal to `tmux-256color` for proper color rendering
+    - Adds terminal overrides for proper italic rendering
+    - Ensures compatibility with various terminal emulators (xterm, Alacritty, etc.)
+
+    ### Timing & Focus
+
+    ```bash
+    set-option -sg escape-time 10
+    set-option -g focus-events on
+    ```
+
+    - `escape-time 10`: Reduces delay when pressing ESC (important for Vim/Neovim)
+    - `focus-events on`: Allows Neovim/Vim to respond to focus events
+
+  </Tab>
+
+  <Tab title="Prefix Key">
+    ### Custom Prefix: C-Space
+
+    ```bash
+    # remap prefix from 'C-b' to 'C-a'
+    unbind C-b
+    set -g prefix C-Space
+    bind C-Space send-prefix
+    ```
+
+    **Why C-Space?**
+    - More ergonomic than default `C-b` (Ctrl+b)
+    - Easier to reach on modern keyboards
+    - Space bar is accessible with either thumb
+    - Less likely to conflict with other applications
+
+    <Note>
+      Despite the comment mentioning C-a, the actual binding is C-Space (Ctrl+Space), which is the recommended modern prefix.
+    </Note>
+
+    ### Using the Prefix
+
+    All tmux commands are triggered with `C-Space` followed by another key:
+    - `C-Space c` - Create new window
+    - `C-Space %` - Split vertically
+    - `C-Space "` - Split horizontally
+    - `C-Space d` - Detach from session
+
+  </Tab>
+
+  <Tab title="Windows & Panes">
+    ### Window Numbering
+
+    ```bash
+    set -g renumber-windows on
+    set -g base-index 1
+    ```
+
+    - `renumber-windows on`: Automatically renumber windows when one is closed
+    - `base-index 1`: Start window numbering at 1 instead of 0 (easier to reach on keyboard)
+
+    ### Mouse Support
+
+    ```bash
+    set -g mouse on
+    ```
+
+    Enables mouse support for:
+    - Selecting panes
+    - Resizing panes by dragging borders
+    - Scrolling through pane history
+    - Selecting text (though Vim keybindings are preferred)
+
+  </Tab>
+
+  <Tab title="Vim Keybindings">
+    ### Copy Mode Configuration
+
+    ```bash
+    # Enable Vim keybindings in copy mode
+    setw -g mode-keys vi
+
+    # Enter copy mode with Prefix+[
+    bind-key [ copy-mode
+
+    # Vim-like navigation in copy mode
+    bind-key -T copy-mode-vi 'v' send -X begin-selection
+    bind-key -T copy-mode-vi 'y' send -X copy-selection
+    bind-key -T copy-mode-vi 'V' send -X rectangle-toggle
+    ```
+
+    **Copy Mode Workflow:**
+
+    1. Enter copy mode: `C-Space [` or scroll with mouse
+    2. Navigate with Vim keys: `h`, `j`, `k`, `l`
+    3. Start selection: `v` (visual mode)
+    4. Extend selection with movement keys
+    5. Copy selection: `y` (yank)
+    6. Toggle rectangular selection: `V`
+
+    <Accordion title="Additional Vim Navigation Keys">
+      Once in copy mode, use standard Vim motions:
+      - `w` / `b` - Forward/backward by word
+      - `0` / `$` - Start/end of line
+      - `gg` / `G` - Start/end of buffer
+      - `Ctrl-u` / `Ctrl-d` - Scroll up/down half page
+      - `/` - Search forward
+      - `?` - Search backward
+      - `n` / `N` - Next/previous search match
+    </Accordion>
+
+  </Tab>
+</Tabs>
+
+## Plugin Management
+
+### TPM (Tmux Plugin Manager)
+
+```bash
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'dreamsofcode-io/catppuccin-tmux'
+# set -g @plugin 'catppuccin/tmux'
+
+run '~/.tmux/plugins/tpm/tpm'
+```
+
+### Installed Plugins
+
+<Accordion title="Catppuccin Theme">
+  **Plugin**: `dreamsofcode-io/catppuccin-tmux`
+
+  A beautiful, pastel color scheme that provides:
+  - Consistent theming across status bar and panes
+  - Clear visual separation between active/inactive panes
+  - Customizable status bar modules
+  - Integration with tmux's visual style
+
+  The configuration uses the DreamsOfCode variant which provides additional features and customization options.
+</Accordion>
+
+### TPM Key Bindings
+
+- `Prefix + I` (capital i) - Install plugins
+- `Prefix + U` (capital u) - Update plugins
+- `Prefix + alt + u` - Uninstall plugins not in config
+
+### Installing TPM
+
+```bash
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+```
+
+After cloning, reload tmux config and press `Prefix + I` to install plugins.
+
+## Complete Configuration
+
+```bash
+# Enable Vim keybindings in copy mode
+set-option -sa terminal-overrides ",xterm*:Tc:RGB:sitm=\E[3m:ritm=\E[23m"
+set -g default-terminal "tmux-256color"
+setw -g mode-keys vi
+set -ga terminal-overrides ',xterm-256color:Tc'
+set -g renumber-windows on
+set -g base-index 1
+
+# remap prefix from 'C-b' to 'C-a'
+unbind C-b
+set -g prefix C-Space
+bind C-Space send-prefix
+
+set -as terminal-overrides ',xterm*:sitm=\E[3m'
+set-option -sg escape-time 10
+set-option -g focus-events on
+set -g mouse on
+
+# Enter copy mode with Prefix+[
+bind-key [ copy-mode
+
+# Vim-like navigation in copy mode
+bind-key -T copy-mode-vi 'v' send -X begin-selection
+bind-key -T copy-mode-vi 'y' send -X copy-selection
+bind-key -T copy-mode-vi 'V' send -X rectangle-toggle
+
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'dreamsofcode-io/catppuccin-tmux'
+
+run '~/.tmux/plugins/tpm/tpm'
+```
+
+## Quick Reference
+
+### Essential Commands
+
+| Key Binding | Action |
+|-------------|--------|
+| `C-Space c` | Create new window |
+| `C-Space ,` | Rename window |
+| `C-Space &` | Kill window |
+| `C-Space %` | Split pane vertically |
+| `C-Space "` | Split pane horizontally |
+| `C-Space x` | Kill pane |
+| `C-Space z` | Zoom pane (toggle fullscreen) |
+| `C-Space [` | Enter copy mode |
+| `C-Space ]` | Paste buffer |
+| `C-Space d` | Detach from session |
+
+### Window Navigation
+
+| Key Binding | Action |
+|-------------|--------|
+| `C-Space 0-9` | Switch to window by number |
+| `C-Space n` | Next window |
+| `C-Space p` | Previous window |
+| `C-Space l` | Last window |
+| `C-Space w` | List windows |
+
+## Session Management
+
+```bash
+# Create new session
+tmux new -s session-name
+
+# List sessions
+tmux ls
+
+# Attach to session
+tmux attach -t session-name
+
+# Detach from session
+# (inside tmux) C-Space d
+
+# Kill session
+tmux kill-session -t session-name
+```
+
+## Tips & Best Practices
+
+<Note>
+  **Performance Tip**: Keep the `escape-time` at 10ms for optimal Vim/Neovim responsiveness. Higher values will cause noticeable lag when pressing ESC.
+</Note>
+
+1. **Use sessions for projects**: Create separate tmux sessions for different projects
+2. **Name your sessions**: Use meaningful names (`tmux new -s project-name`)
+3. **Master copy mode**: Vim keybindings make text selection and copying fast
+4. **Learn pane navigation**: Use `C-Space o` to cycle through panes
+5. **Customize status bar**: Catppuccin theme can be configured further in TPM plugin settings

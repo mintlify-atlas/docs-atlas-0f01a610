@@ -1,0 +1,450 @@
+---
+title: AeroSpace Configuration
+description: Tiling window manager for macOS with i3-like keybindings and automatic workspace management
+---
+
+## Overview
+
+AeroSpace is a modern tiling window manager for macOS that brings i3/Sway-style window management to the Mac platform. It provides automatic window tiling, workspace management, and keyboard-driven window navigation without the need for disabling System Integrity Protection (SIP).
+
+## Configuration File
+
+The configuration is located at `aerospace/aerospace.toml` and should be placed at `~/.aerospace.toml`.
+
+## Core Settings
+
+<Tabs>
+  <Tab title="Startup & Lifecycle">
+    ### Startup Configuration
+
+    ```toml
+    # Start AeroSpace at login
+    start-at-login = true
+
+    # You can use it to add commands that run after login to macOS user session.
+    # 'start-at-login' needs to be 'true' for 'after-login-command' to work
+    after-login-command = []
+
+    # You can use it to add commands that run after AeroSpace startup.
+    # 'after-startup-command' is run after 'after-login-command'
+    after-startup-command = []
+    ```
+
+    **Lifecycle:**
+    1. macOS login
+    2. AeroSpace auto-starts (if `start-at-login = true`)
+    3. `after-login-command` executes
+    4. `after-startup-command` executes
+
+    <Accordion title="Example Startup Commands">
+      You could add commands like:
+      ```toml
+      after-startup-command = [
+        'exec-and-forget open -a "Alacritty"',
+        'exec-and-forget open -a "Firefox"'
+      ]
+      ```
+    </Accordion>
+
+  </Tab>
+
+  <Tab title="Layout & Normalization">
+    ### Window Normalizations
+
+    ```toml
+    # Normalizations. See: https://nikitabobko.github.io/AeroSpace/guide#normalization
+    enable-normalization-flatten-containers = true
+    enable-normalization-opposite-orientation-for-nested-containers = true
+    ```
+
+    **What normalizations do:**
+
+    - **flatten-containers**: Automatically removes unnecessary container nesting
+    - **opposite-orientation-for-nested-containers**: Prevents same-orientation nesting (e.g., horizontal inside horizontal)
+
+    These settings keep the window tree clean and predictable.
+
+    ### Default Layout
+
+    ```toml
+    # See: https://nikitabobko.github.io/AeroSpace/guide#layouts
+    # The 'accordion-padding' specifies the size of accordion padding
+    # You can set 0 to disable the padding feature
+    accordion-padding = 30
+
+    # Possible values: tiles|accordion
+    default-root-container-layout = 'tiles'
+
+    # Possible values: horizontal|vertical|auto
+    # 'auto' means: wide monitor (anything wider than high) gets horizontal orientation,
+    #               tall monitor (anything higher than wide) gets vertical orientation
+    default-root-container-orientation = 'auto'
+    ```
+
+    **Layout Modes:**
+
+    - **Tiles**: Traditional tiling layout, windows split space evenly
+    - **Accordion**: One main window takes focus, others are minimized to a strip
+
+    **Orientation:**
+
+    - `auto` automatically chooses based on monitor aspect ratio
+    - Wide monitors (16:9, 21:9) get horizontal splits
+    - Tall monitors (portrait) get vertical splits
+
+  </Tab>
+
+  <Tab title="Gaps & Mouse Behavior">
+    ### Gaps Configuration
+
+    ```toml
+    [gaps]
+    inner.horizontal = 0
+    inner.vertical =   0
+    outer.left =       0
+    outer.bottom =     0
+    outer.top =        0
+    outer.right =      0
+    ```
+
+    **Gap Types:**
+
+    - **Inner gaps**: Space between windows
+    - **Outer gaps**: Space between windows and screen edges
+
+    Current configuration uses zero gaps for maximum screen space utilization.
+
+    <Accordion title="Example with Gaps">
+      For a more aesthetic setup with spacing:
+      ```toml
+      [gaps]
+      inner.horizontal = 10
+      inner.vertical =   10
+      outer.left =       10
+      outer.bottom =     10
+      outer.top =        10
+      outer.right =      10
+      ```
+    </Accordion>
+
+    ### Mouse Behavior
+
+    ```toml
+    # Mouse follows focus when focused monitor changes
+    on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+    on-focus-changed = "move-mouse window-lazy-center"
+    ```
+
+    **Automatic mouse positioning:**
+    - When switching monitors, mouse moves to center of new monitor
+    - When switching windows, mouse moves to center of new window
+    - "lazy" means mouse only moves if it's not already in the target area
+
+  </Tab>
+
+  <Tab title="Key Mapping">
+    ### Keyboard Layout
+
+    ```toml
+    # Possible values: (qwerty|dvorak)
+    # See https://nikitabobko.github.io/AeroSpace/guide#key-mapping
+    key-mapping.preset = 'qwerty'
+    ```
+
+    AeroSpace supports different keyboard layouts for consistent keybindings across layouts.
+
+  </Tab>
+</Tabs>
+
+## Keybindings
+
+### Window Navigation
+
+```toml
+# See: https://nikitabobko.github.io/AeroSpace/commands#focus
+alt-h = 'focus left'
+alt-j = 'focus down'
+alt-k = 'focus up'
+alt-l = 'focus right'
+```
+
+**Vim-style navigation:**
+- `Alt+h` - Focus window to the left
+- `Alt+j` - Focus window below
+- `Alt+k` - Focus window above
+- `Alt+l` - Focus window to the right
+
+### Window Movement
+
+```toml
+# See: https://nikitabobko.github.io/AeroSpace/commands#move
+alt-shift-h = 'move left'
+alt-shift-j = 'move down'
+alt-shift-k = 'move up'
+alt-shift-l = 'move right'
+```
+
+**Moving windows:**
+- `Alt+Shift+h` - Move window left
+- `Alt+Shift+j` - Move window down
+- `Alt+Shift+k` - Move window up
+- `Alt+Shift+l` - Move window right
+
+### Layout Management
+
+```toml
+# See: https://nikitabobko.github.io/AeroSpace/commands#layout
+alt-slash = 'layout tiles horizontal vertical'
+alt-comma = 'layout accordion horizontal vertical'
+```
+
+**Layout switching:**
+- `Alt+/` - Toggle between horizontal and vertical tiles layout
+- `Alt+,` - Toggle between horizontal and vertical accordion layout
+
+### Window Resizing
+
+```toml
+# See: https://nikitabobko.github.io/AeroSpace/commands#resize
+alt-shift-minus = 'resize smart -50'
+alt-shift-equal = 'resize smart +50'
+```
+
+**Smart resizing:**
+- `Alt+Shift+-` - Shrink focused window by 50 pixels
+- `Alt+Shift+=` - Grow focused window by 50 pixels
+- "smart" automatically determines the best resize direction
+
+## Workspace Management
+
+### Switching Workspaces
+
+```toml
+# See: https://nikitabobko.github.io/AeroSpace/commands#workspace
+alt-1 = 'workspace 1'
+alt-2 = 'workspace 2'
+alt-3 = 'workspace 3'
+alt-4 = 'workspace 4'
+alt-5 = 'workspace 5'
+alt-6 = 'workspace 6'
+alt-7 = 'workspace 7'
+alt-8 = 'workspace 8'
+alt-9 = 'workspace 9'
+
+# Named workspaces
+alt-a = 'workspace A'
+alt-b = 'workspace B'
+alt-c = 'workspace C'
+alt-d = 'workspace D'
+alt-e = 'workspace E'
+alt-f = 'workspace F'
+alt-g = 'workspace G'
+alt-i = 'workspace I'
+alt-m = 'workspace M'
+alt-n = 'workspace N'
+alt-o = 'workspace O'
+alt-p = 'workspace P'
+alt-q = 'workspace Q'
+alt-r = 'workspace R'
+alt-s = 'workspace S'
+alt-t = 'workspace T'
+alt-u = 'workspace U'
+alt-v = 'workspace V'
+alt-w = 'workspace W'
+alt-x = 'workspace X'
+alt-y = 'workspace Y'
+alt-z = 'workspace Z'
+```
+
+<Note>
+  This configuration provides both numbered workspaces (1-9) and named workspaces (A-Z). You can remove unused workspace bindings to simplify your configuration.
+</Note>
+
+**Workspace naming ideas:**
+- `W` - Web browsers
+- `C` - Code/Development
+- `T` - Terminal
+- `M` - Music/Media
+- `E` - Email/Communication
+
+### Moving Windows to Workspaces
+
+```toml
+# See: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
+alt-shift-1 = 'move-node-to-workspace 1'
+alt-shift-2 = 'move-node-to-workspace 2'
+alt-shift-3 = 'move-node-to-workspace 3'
+# ... (continues for all workspaces)
+```
+
+**Moving windows:**
+- `Alt+Shift+1` - Move focused window to workspace 1
+- `Alt+Shift+W` - Move focused window to workspace W
+- etc.
+
+### Workspace Navigation
+
+```toml
+# See: https://nikitabobko.github.io/AeroSpace/commands#workspace-back-and-forth
+alt-tab = 'workspace-back-and-forth'
+
+# See: https://nikitabobko.github.io/AeroSpace/commands#move-workspace-to-monitor
+alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
+```
+
+**Quick navigation:**
+- `Alt+Tab` - Switch to previously focused workspace
+- `Alt+Shift+Tab` - Move current workspace to next monitor
+
+## Service Mode
+
+```toml
+# See: https://nikitabobko.github.io/AeroSpace/commands#mode
+alt-shift-semicolon = 'mode service'
+
+# 'service' binding mode declaration.
+[mode.service.binding]
+esc = ['reload-config', 'mode main']
+r = ['flatten-workspace-tree', 'mode main'] # reset layout
+f = ['layout floating tiling', 'mode main'] # Toggle between floating and tiling layout
+backspace = ['close-all-windows-but-current', 'mode main']
+
+alt-shift-h = ['join-with left', 'mode main']
+alt-shift-j = ['join-with down', 'mode main']
+alt-shift-k = ['join-with up', 'mode main']
+alt-shift-l = ['join-with right', 'mode main']
+```
+
+**Service mode** provides maintenance and advanced operations:
+
+1. Enter service mode: `Alt+Shift+;`
+2. Perform action:
+   - `Esc` - Reload configuration and exit
+   - `r` - Reset/flatten workspace layout
+   - `f` - Toggle floating mode for current window
+   - `Backspace` - Close all windows except focused one
+   - `Alt+Shift+h/j/k/l` - Join windows together
+3. Returns to main mode automatically after action
+
+<Accordion title="What is 'join-with'?">
+  The `join-with` command allows you to join two windows into a container:
+  - Creates a tabbed or stacked container
+  - Useful for grouping related windows
+  - Can be split again later
+
+  Example: Join your terminal with your editor to keep them grouped.
+</Accordion>
+
+## Workflow Examples
+
+### Development Workflow
+
+```bash
+# Setup
+1. Alt+C → Switch to Code workspace
+2. Open editor (VSCode/Neovim)
+3. Alt+/ → Toggle to horizontal layout
+4. Alt+Shift+T → Move terminal to workspace T
+5. Alt+T → Switch to Terminal workspace
+6. Alt+Tab → Jump between Code and Terminal
+```
+
+### Multi-Monitor Setup
+
+```bash
+# Moving workspaces between monitors
+1. Alt+1 → Go to workspace 1
+2. Alt+Shift+Tab → Move workspace 1 to next monitor
+3. Workspace 1 now on second monitor
+```
+
+### Quick Window Management
+
+```bash
+# Resize and rearrange
+1. Alt+h/j/k/l → Navigate to target window
+2. Alt+Shift+h/j/k/l → Move window to desired position
+3. Alt+Shift+= → Grow window
+4. Alt+Shift+- → Shrink window
+```
+
+## Quick Reference Card
+
+### Navigation
+
+| Keybinding | Action |
+|------------|--------|
+| `Alt+h/j/k/l` | Focus window (Vim directions) |
+| `Alt+1-9` | Switch to numbered workspace |
+| `Alt+A-Z` | Switch to named workspace |
+| `Alt+Tab` | Toggle between last two workspaces |
+
+### Window Management
+
+| Keybinding | Action |
+|------------|--------|
+| `Alt+Shift+h/j/k/l` | Move window |
+| `Alt+Shift+1-9` | Move window to numbered workspace |
+| `Alt+Shift+A-Z` | Move window to named workspace |
+| `Alt+Shift+=` | Grow window |
+| `Alt+Shift+-` | Shrink window |
+
+### Layouts
+
+| Keybinding | Action |
+|------------|--------|
+| `Alt+/` | Toggle tiles layout orientation |
+| `Alt+,` | Toggle accordion layout orientation |
+| `Alt+Shift+;` then `f` | Toggle floating/tiling |
+| `Alt+Shift+;` then `r` | Reset workspace layout |
+
+### System
+
+| Keybinding | Action |
+|------------|--------|
+| `Alt+Shift+;` | Enter service mode |
+| `Alt+Shift+;` then `Esc` | Reload configuration |
+| `Alt+Shift+Tab` | Move workspace to next monitor |
+
+## Tips & Best Practices
+
+<Note>
+  **Workspace Strategy**: Organize workspaces by activity type (development, communication, research) rather than by application. This provides more flexibility.
+</Note>
+
+1. **Start small**: Begin with 3-4 workspaces and expand as needed
+2. **Use named workspaces**: Easier to remember than numbers
+3. **Learn service mode**: Powerful for quick adjustments
+4. **Master navigation**: `Alt+h/j/k/l` becomes muscle memory quickly
+5. **Adjust gaps**: Try non-zero gaps if you prefer visual separation
+6. **Auto-start apps**: Use `after-startup-command` to launch your regular apps
+
+## Troubleshooting
+
+<Accordion title="AeroSpace not starting at login">
+  1. Check System Preferences → Users & Groups → Login Items
+  2. Ensure AeroSpace has permission in System Preferences → Security & Privacy
+  3. Verify `start-at-login = true` in configuration
+</Accordion>
+
+<Accordion title="Keybindings not working">
+  1. Check for conflicts with macOS shortcuts (System Preferences → Keyboard → Shortcuts)
+  2. Some apps capture Alt/Option key (particularly terminal apps)
+  3. Try reloading config: `Alt+Shift+;` then `Esc`
+</Accordion>
+
+<Accordion title="Windows not tiling properly">
+  Some macOS apps don't support tiling well:
+  - System Preferences
+  - Some menu bar apps
+  - Apps with fixed window sizes
+
+  Use `Alt+Shift+;` then `f` to toggle floating mode for these windows.
+</Accordion>
+
+## Resources
+
+- [AeroSpace Official Documentation](https://nikitabobko.github.io/AeroSpace/)
+- [AeroSpace GitHub Repository](https://github.com/nikitabobko/AeroSpace)
+- [Command Reference](https://nikitabobko.github.io/AeroSpace/commands)
+- [Configuration Guide](https://nikitabobko.github.io/AeroSpace/guide)

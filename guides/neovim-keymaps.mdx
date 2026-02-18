@@ -1,0 +1,262 @@
+---
+title: Neovim Keymaps
+description: Complete guide to custom and default keymaps in this Neovim configuration
+---
+
+This configuration uses LazyVim's default keymaps with minimal custom overrides. LazyVim provides a comprehensive set of keybindings designed for efficient text editing and navigation.
+
+## Custom Keymaps
+
+**File:** `nvim/lua/config/keymaps.lua`
+
+This configuration intentionally keeps custom keymaps minimal, relying on LazyVim's well-designed defaults:
+
+```lua
+-- Keymaps are automatically loaded on the VeryLazy event
+-- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
+-- Add any additional keymaps here
+```
+
+<Note>
+No custom keymaps are defined. This configuration uses 100% of LazyVim's default keybindings.
+</Note>
+
+## LazyVim Default Keymaps
+
+LazyVim includes comprehensive keybindings out of the box. Here are the most important ones organized by category:
+
+### General
+
+| Keymap | Description | Mode |
+|--------|-------------|------|
+| `<leader>` | Leader key (Space by default) | All |
+| `jj` / `jk` | Exit insert mode (if enabled) | Insert |
+| `:w` / `<leader>w` | Save file | Normal |
+| `:q` / `<leader>q` | Quit | Normal |
+
+### Window Management
+
+| Keymap | Description | Mode |
+|--------|-------------|------|
+| `<C-h>` | Move to left window | Normal |
+| `<C-j>` | Move to bottom window | Normal |
+| `<C-k>` | Move to top window | Normal |
+| `<C-l>` | Move to right window | Normal |
+| `<C-Up>` | Increase window height | Normal |
+| `<C-Down>` | Decrease window height | Normal |
+| `<C-Left>` | Decrease window width | Normal |
+| `<C-Right>` | Increase window width | Normal |
+| `<leader>-` | Split window below | Normal |
+| `<leader>|` | Split window right | Normal |
+| `<leader>wd` | Delete window | Normal |
+
+### Buffer Management
+
+| Keymap | Description | Mode |
+|--------|-------------|------|
+| `<S-h>` | Previous buffer | Normal |
+| `<S-l>` | Next buffer | Normal |
+| `<leader>bb` | Switch to other buffer | Normal |
+| `<leader>bd` | Delete buffer | Normal |
+| `<leader>bD` | Delete buffer and window | Normal |
+| `[b` | Previous buffer | Normal |
+| `]b` | Next buffer | Normal |
+
+### File Navigation (Telescope/Snacks)
+
+| Keymap | Description | Mode |
+|--------|-------------|------|
+| `<leader><space>` | Find files | Normal |
+| `<leader>ff` | Find files | Normal |
+| `<leader>fr` | Recent files | Normal |
+| `<leader>fg` | Find files (git) | Normal |
+| `<leader>fb` | Find buffers | Normal |
+| `<leader>/` | Grep (search in files) | Normal |
+| `<leader>sg` | Grep (search in files) | Normal |
+| `<leader>sw` | Search word under cursor | Normal |
+| `<leader>sG` | Grep (root dir) | Normal |
+
+### Code Navigation
+
+| Keymap | Description | Mode |
+|--------|-------------|------|
+| `gd` | Go to definition | Normal |
+| `gr` | Go to references | Normal |
+| `gI` | Go to implementation | Normal |
+| `gy` | Go to type definition | Normal |
+| `gD` | Go to declaration | Normal |
+| `K` | Hover documentation | Normal |
+| `<leader>ca` | Code action | Normal/Visual |
+| `<leader>cr` | Rename symbol | Normal |
+| `[d` | Previous diagnostic | Normal |
+| `]d` | Next diagnostic | Normal |
+| `[e` | Previous error | Normal |
+| `]e` | Next error | Normal |
+
+### Code Editing
+
+| Keymap | Description | Mode |
+|--------|-------------|------|
+| `<leader>cf` | Format document | Normal/Visual |
+| `gcc` | Toggle line comment | Normal |
+| `gbc` | Toggle block comment | Normal |
+| `gc` | Toggle comment (selection) | Visual |
+| `>` | Indent | Visual |
+| `<` | Unindent | Visual |
+| `J` | Join lines | Normal |
+| `<A-j>` | Move line down | Normal/Visual |
+| `<A-k>` | Move line up | Normal/Visual |
+
+### LSP & Diagnostics
+
+| Keymap | Description | Mode |
+|--------|-------------|------|
+| `<leader>cd` | Line diagnostics | Normal |
+| `<leader>cl` | LSP info | Normal |
+| `<leader>xd` | Document diagnostics | Normal |
+| `<leader>xD` | Workspace diagnostics | Normal |
+| `<leader>xx` | Trouble toggle | Normal |
+
+### Neo-tree (File Explorer)
+
+| Keymap | Description | Mode |
+|--------|-------------|------|
+| `<leader>e` | Toggle file explorer | Normal |
+| `<leader>E` | File explorer (cwd) | Normal |
+| `<leader>fe` | Toggle file explorer | Normal |
+| `<leader>fE` | File explorer (cwd) | Normal |
+
+### Terminal
+
+| Keymap | Description | Mode |
+|--------|-------------|------|
+| `<C-/>` | Toggle terminal | Normal/Terminal |
+| `<leader>ft` | Terminal (root dir) | Normal |
+| `<leader>fT` | Terminal (cwd) | Normal |
+| `<Esc><Esc>` | Exit terminal mode | Terminal |
+
+### Git
+
+| Keymap | Description | Mode |
+|--------|-------------|------|
+| `<leader>gg` | Lazygit | Normal |
+| `<leader>gb` | Git blame line | Normal |
+| `<leader>gB` | Git browse | Normal |
+| `]h` | Next hunk | Normal |
+| `[h` | Previous hunk | Normal |
+| `<leader>ghs` | Stage hunk | Normal/Visual |
+| `<leader>ghr` | Reset hunk | Normal/Visual |
+| `<leader>ghS` | Stage buffer | Normal |
+| `<leader>ghu` | Undo stage hunk | Normal |
+| `<leader>ghR` | Reset buffer | Normal |
+| `<leader>ghp` | Preview hunk | Normal |
+
+### UI & Utilities
+
+| Keymap | Description | Mode |
+|--------|-------------|------|
+| `<leader>ui` | Inspect position | Normal |
+| `<leader>uL` | Toggle LazyVim changelog | Normal |
+| `<leader>ul` | Toggle line numbers | Normal |
+| `<leader>uw` | Toggle word wrap | Normal |
+| `<leader>us` | Toggle spelling | Normal |
+| `<leader>uc` | Toggle conceal | Normal |
+| `<leader>uf` | Toggle format on save | Normal |
+
+### Tabs
+
+| Keymap | Description | Mode |
+|--------|-------------|------|
+| `<leader><tab>l` | Last tab | Normal |
+| `<leader><tab>f` | First tab | Normal |
+| `<leader><tab><tab>` | New tab | Normal |
+| `<leader><tab>]` | Next tab | Normal |
+| `<leader><tab>[` | Previous tab | Normal |
+| `<leader><tab>d` | Close tab | Normal |
+
+### Plugin-Specific Keymaps
+
+#### LeetCode
+
+The LeetCode plugin provides its own keymaps when activated:
+
+```vim
+:Leet          " Open LeetCode menu
+:Leet list     " List problems
+:Leet desc     " Show problem description
+:Leet run      " Run code
+:Leet submit   " Submit solution
+```
+
+#### Obsidian
+
+Obsidian integration keymaps (in markdown files):
+
+```vim
+:ObsidianToday       " Open today's daily note
+:ObsidianYesterday   " Open yesterday's note
+:ObsidianNew         " Create new note
+:ObsidianSearch      " Search notes
+:ObsidianQuickSwitch " Quick switch between notes
+:ObsidianFollowLink  " Follow link under cursor
+:ObsidianBacklinks   " Show backlinks
+```
+
+#### Vim Be Good
+
+Start the game:
+
+```vim
+:VimBeGood
+```
+
+## Completion Keymaps
+
+Customized via `tab-complete.lua`:
+
+| Keymap | Description | Mode |
+|--------|-------------|------|
+| `<Tab>` | Confirm completion or select first item | Insert |
+| `<CR>` | Cancel completion and create newline | Insert |
+| `<C-n>` | Next completion item | Insert |
+| `<C-p>` | Previous completion item | Insert |
+| `<C-d>` | Scroll docs down | Insert |
+| `<C-u>` | Scroll docs up | Insert |
+
+## Tmux Integration
+
+If you're using Tmux alongside Neovim, window navigation keymaps (`<C-h/j/k/l>`) work seamlessly across Tmux panes and Neovim windows when properly configured.
+
+## Learning More
+
+To discover all available keymaps in real-time:
+
+```vim
+:Telescope keymaps
+```
+
+Or use Which-key (included in LazyVim) - just press `<Space>` and wait a moment to see available keybindings.
+
+## Adding Custom Keymaps
+
+To add your own keymaps, edit `nvim/lua/config/keymaps.lua`:
+
+```lua
+-- Example custom keymaps
+local map = vim.keymap.set
+
+-- Map jj to exit insert mode
+map("i", "jj", "<Esc>", { desc = "Exit insert mode" })
+
+-- Quick save with Ctrl+S
+map({ "n", "i", "v" }, "<C-s>", "<cmd>w<cr><esc>", { desc = "Save file" })
+
+-- Better navigation in command mode
+map("c", "<C-h>", "<Left>", { desc = "Move left" })
+map("c", "<C-l>", "<Right>", { desc = "Move right" })
+```
+
+<Note>
+For a complete and up-to-date list of LazyVim's default keymaps, visit:
+[https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua](https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua)
+</Note>
