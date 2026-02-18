@@ -137,9 +137,10 @@ This minimal entry point delegates all setup to the lazy configuration module.
     ```
 
     ### Custom Highlight:
-    - Sets visual selection to use bright yellow background (`#ffff00`) with black text (`#000000`)
+    - Sets visual selection to use bright yellow background (`#ffff00`) with black foreground text (`#000000`)
     - Provides high contrast for visual mode selections
     - This highlight is set immediately on startup
+    - Both background and foreground colors are customized for maximum visibility
 
   </Tab>
 
@@ -227,6 +228,10 @@ return {
 }
 ```
 
+<Warning>
+  The `path` in the workspace configuration points to a specific user's iCloud Obsidian vault. You **must** update this path to match your own Obsidian vault location before using the plugin.
+</Warning>
+
 <Note>
   The plugin is lazy-loaded and only activates when opening Markdown files (`ft = "markdown"`), improving startup time.
 </Note>
@@ -258,11 +263,30 @@ return {
 
 LazyVim provides "extras" - optional plugin configurations that can be enabled. These are configured in `lazyvim.json`.
 
-<Accordion title="View available extras">
+### Enabled Extras
+
+**File:** `lazyvim.json`
+
+The following LazyVim extras are enabled in this configuration:
+
+**AI/Coding Assistance:**
+- `lazyvim.plugins.extras.ai.copilot-chat` - GitHub Copilot Chat integration
+- `lazyvim.plugins.extras.coding.nvim-cmp` - Enhanced completion engine
+
+**Language Support:**
+- `lazyvim.plugins.extras.lang.clangd` - C/C++ language server
+- `lazyvim.plugins.extras.lang.go` - Go language support
+- `lazyvim.plugins.extras.lang.json` - JSON language server
+- `lazyvim.plugins.extras.lang.python` - Python language support with venv-selector
+- `lazyvim.plugins.extras.lang.tailwind` - Tailwind CSS support
+- `lazyvim.plugins.extras.lang.typescript` - TypeScript/JavaScript support
+
+<Accordion title="View all available extras">
   Visit [LazyVim Extras](https://www.lazyvim.org/extras) to see all available configurations for:
-  - Language support (TypeScript, Python, Go, Rust, etc.)
-  - Additional editors features (GitHub Copilot, Copilot Chat, etc.)
+  - Additional language support (Rust, Ruby, Elixir, etc.)
+  - Editor features (GitHub Copilot, Tabnine, etc.)
   - UI enhancements (dashboard, bufferline, etc.)
+  - Testing frameworks (Neotest, etc.)
   - And more
 </Accordion>
 
